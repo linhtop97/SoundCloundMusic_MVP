@@ -7,6 +7,8 @@
     <color name="sc.theme.colorPrimaryDark">#00796b</color>
     <color name="sc.theme.colorAccent">#effcfc</color>
 
-    <color name="mp.theme.colorControlActivated">#7AFFFFFF</color>
-    <color name="mp.theme.colorControlHighlight">#7AFFFFFF</color>
+    <color name="sc.theme.textColorPrimary">#effcfc</color>
+    <color name="sc.theme.textColorSecondary">#00796b</color>
+    <color name="sc.theme.colorControlActivated">#7AFFFFFF</color>
+    <color name="sc.theme.colorControlHighlight">#7AFFFFFF</color>
 </resources>
