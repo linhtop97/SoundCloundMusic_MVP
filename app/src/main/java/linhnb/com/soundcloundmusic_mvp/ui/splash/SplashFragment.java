@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,9 @@ import android.view.animation.AnimationUtils;
 
 import linhnb.com.soundcloundmusic_mvp.R;
 import linhnb.com.soundcloundmusic_mvp.ui.main.MainActivity;
+import linhnb.com.soundcloundmusic_mvp.ui.maincontent.MainFragment;
 import linhnb.com.soundcloundmusic_mvp.utils.Constant;
+import linhnb.com.soundcloundmusic_mvp.utils.FragmentManagerUtils;
 
 public class SplashFragment extends Fragment implements SplashContract.View {
 
@@ -48,7 +51,21 @@ public class SplashFragment extends Fragment implements SplashContract.View {
 
     @Override
     public void showMainApp() {
-        this.onDestroy();
+
+        FragmentManager manager = mMainActivity.getSupportFragmentManager();
+        Fragment fragment = manager.findFragmentByTag(this.getClass().getSimpleName());
+        if (fragment != null)
+            manager.beginTransaction().remove(fragment).commit();
+        MainFragment mainFragment = MainFragment.newInstance();
+        FragmentManagerUtils.addFragment(manager, mainFragment, R.id.main_content,
+                mainFragment.getClass().getSimpleName(), false);
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(false);
     }
 
     @Override

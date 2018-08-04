@@ -6,8 +6,7 @@
         <item name="colorPrimary">@color/sc.theme.colorPrimary</item>
         <item name="colorPrimaryDark">@color/sc.theme.colorPrimaryDark</item>
         <item name="colorAccent">@color/sc.theme.colorAccent</item>
-
-        <item name="android:textColorPrimary">@color/sc.theme.textColorPrimary</item>
+        <item name="android:textColorPrimary">@color/sc.theme.colorPrimaryDark</item>
         <item name="android:textColorSecondary">@color/sc.theme.textColorSecondary</item>
 
         <item name="colorControlNormal">?attr/colorAccent</item>
@@ -16,31 +15,34 @@
     </style>
 
     <style name="SC.Theme" parent="AppTheme" />
-    <style name="SC.Theme.FullCreeen" parent="AppTheme" >
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
-    </style>
 
+    <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="searchHintIcon">@null</item>
+    </style>
 
     <!-- Widget -->
 
     <style name="SC.Theme.Widget" />
 
 
-    <!--<style name="MP.Theme.Widget.Toolbar">-->
-    <!--<item name="android:id">@id/toolbar</item>-->
-    <!--<item name="android:layout_width">match_parent</item>-->
-    <!--<item name="android:layout_height">?android:attr/actionBarSize</item>-->
-    <!--<item name="titleTextAppearance">@style/MP.Theme.TextAppearance.Light.Toolbar.Title-->
-    <!--</item>-->
-    <!--</style>-->
+    <style name="SC.Theme.Widget.Toolbar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/sc.theme.textColorPrimary</item>
+        <item name="android:textAppearance">@style/SC.Theme.TextAppearance.Light.Toolbar.Title
+        </item>
+        <item name="android:textColorSecondary">@color/sc.theme.textColorSecondary</item>
+        <item name="android:id">@id/toolbar</item>
+    </style>
 
-    <!--<style name="MP.Theme.TextAppearance.Toolbar">-->
-    <!--<item name="android:textSize">18sp</item>-->
-    <!--</style>-->
+    <style name="SC.Theme.TextAppearance">
+        <item name="fontPath">@string/mp.font.roboto.monospace.regular</item>
+    </style>
 
-    <!--<style name="MP.Theme.TextAppearance.Light.Toolbar.Title" parent="MP.Theme.TextAppearance.Toolbar">-->
-    <!--<item name="android:textColor">@color/sc.theme.colorAccent</item>-->
-    <!--</style>-->
+    <style name="SC.Theme.TextAppearance.Toolbar">
+        <item name="android:textSize">18sp</item>
+    </style>
 
+    <style name="SC.Theme.TextAppearance.Light.Toolbar.Title" parent="SC.Theme.TextAppearance.Toolbar">
+        <item name="android:textColor">@color/sc.theme.colorAccent</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

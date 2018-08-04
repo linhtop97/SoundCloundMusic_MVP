@@ -3,12 +3,12 @@
 
     <color name="transparent">#00000000</color>
 
-    <color name="sc.theme.colorPrimary">#00796b</color>
+    <color name="sc.theme.colorPrimary">#FFFFFF</color>
     <color name="sc.theme.colorPrimaryDark">#00796b</color>
-    <color name="sc.theme.colorAccent">#effcfc</color>
+    <color name="sc.theme.colorAccent">#00796b</color>
 
-    <color name="sc.theme.textColorPrimary">#effcfc</color>
-    <color name="sc.theme.textColorSecondary">#00796b</color>
+    <color name="sc.theme.textColorPrimary">#223331</color>
+    <color name="sc.theme.textColorSecondary">#223331</color>
     <color name="sc.theme.colorControlActivated">#7AFFFFFF</color>
     <color name="sc.theme.colorControlHighlight">#7AFFFFFF</color>
 </resources>
