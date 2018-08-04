@@ -21,4 +21,8 @@ public class MainPresenter implements MainContract.Presenter {
 
     }
 
+    @Override
+    public void startPlashScreen() {
+        mView.showSplashScreen();
+    }
 }

@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">SoundCloundMusic_MVP</string>
     <string name="app_name_splash">Sound Clound Music</string>
+    <string name="title_home">Home</string>
+    <string name="title_local_music">Local Music</string>
+    <string name="title_playlist">Playlist</string>
+    <string name="title_search">Sreach</string>
+    <string name="search_message">Type here to search</string>
 </resources>
