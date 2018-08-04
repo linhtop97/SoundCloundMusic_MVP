@@ -1,50 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<android.support.v4.view.ViewPager-->
-    <!--android:id="@+id/view_pager"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="0dp"-->
-    <!--android:layout_marginTop="@dimen/dp_1"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--app:layout_constraintRight_toRightOf="parent"-->
-    <!--app:layout_constraintTop_toTopOf="parent">-->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <!--<android.support.design.widget.TabLayout-->
-    <!--android:id="@+id/tablayout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="?actionBarSize"-->
-    <!--android:background="@drawable/frame_background"-->
-    <!--app:tabGravity="fill"-->
-    <!--app:tabIndicatorColor="@android:color/white"-->
-    <!--app:tabMode="fixed"-->
-    <!--app:tabSelectedTextColor="@android:color/white"-->
-    <!--app:tabTextColor="@android:color/white">-->
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@drawable/frame_background"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/sc.theme.colorTabIconselected"
+            app:tabMode="fixed">
 
-    <!--<android.support.design.widget.TabItem-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:icon="@drawable/ic_home_selected" />-->
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/ic_home_selected" />
 
-    <!--<android.support.design.widget.TabItem-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:icon="@drawable/ic_local_music_unselected" />-->
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/ic_local_music_unselected" />
 
-    <!--<android.support.design.widget.TabItem-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:icon="@drawable/ic_playlist_unselected" />-->
-    <!--</android.support.design.widget.TabLayout>-->
-
-
-    <!--</android.support.v4.view.ViewPager>-->
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/ic_playlist_unselected" />
+        </android.support.design.widget.TabLayout>
+    </android.support.v4.view.ViewPager>
 </android.support.constraint.ConstraintLayout>

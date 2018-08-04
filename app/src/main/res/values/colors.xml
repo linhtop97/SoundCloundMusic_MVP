@@ -11,4 +11,8 @@
     <color name="sc.theme.textColorSecondary">#223331</color>
     <color name="sc.theme.colorControlActivated">#7AFFFFFF</color>
     <color name="sc.theme.colorControlHighlight">#7AFFFFFF</color>
+
+    <color name="sc.theme.colorTabIconUnselected">#223331</color>
+    <color name="sc.theme.colorTabIconselected">#FF5722</color>
+    <color name="sc.theme.colortabIndicator">#FF5722</color>
 </resources>
