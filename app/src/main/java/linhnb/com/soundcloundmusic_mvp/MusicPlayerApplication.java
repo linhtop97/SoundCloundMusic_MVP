@@ -20,7 +20,7 @@ public class MusicPlayerApplication extends Application {
         // Custom fonts
         CalligraphyConfig.initDefault(
                 new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/Roboto-Monospace-Regular.ttf")
+                        .setDefaultFontPath("fonts/Roboto-Medium.ttf")
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
