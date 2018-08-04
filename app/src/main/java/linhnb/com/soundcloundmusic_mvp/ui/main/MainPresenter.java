@@ -1,7 +1,5 @@
 package linhnb.com.soundcloundmusic_mvp.ui.main;
 
-import android.os.Handler;
-
 public class MainPresenter implements MainContract.Presenter {
 
     private MainContract.View mView;

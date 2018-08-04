@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
+    android:background="@color/sc.theme.colorPrimaryDark"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
@@ -16,5 +17,14 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:maxButtonHeight="@dimen/dp_32"
-        app:navigationIcon="@drawable/menu" />
+        app:navigationIcon="@drawable/ic_navigation" />
+
+    <FrameLayout
+        android:id="@+id/app_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 </android.support.constraint.ConstraintLayout>
