@@ -37,15 +37,15 @@ public class StringUtil {
 
     public static String formatCount(int count) {
         float number = (float) count / 1000000;
-        if (number >= 0) {
+        if ((int) number > 0) {
             return String.format("%.1f Tr", number);
-        } else {
-            number = (float) count / 1000;
-            if (number > 0) {
-                String.format("%d K", number);
-            }
         }
-        return String.valueOf(number);
+        number = (float) count / 1000;
+        if ((int) number > 0) {
+            return String.format("%.1f K", number);
+        }
+
+        return String.valueOf(count);
     }
 
     public static String convertUrlDownloadTrack(String url) {
