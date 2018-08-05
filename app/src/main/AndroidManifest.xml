@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="linhnb.com.soundcloundmusic_mvp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MusicPlayerApplication"
         android:allowBackup="true"
@@ -10,10 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/SC.Theme">
-        <activity android:name=".ui.main.MainActivity"
+        <activity
+            android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SC.Theme"
-            >
+            android:theme="@style/SC.Theme">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 

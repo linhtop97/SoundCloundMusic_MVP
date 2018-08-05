@@ -36,11 +36,16 @@ public class StringUtil {
     }
 
     public static String formatCount(int count) {
-        int number = count / 1000;
-        if (number == 0) {
-            return String.valueOf(count);
+        float number = (float) count / 1000000;
+        if (number >= 0) {
+            return String.format("%.1f Tr", number);
+        } else {
+            number = (float) count / 1000;
+            if (number > 0) {
+                String.format("%d K", number);
+            }
         }
-        return String.format("%dK", number);
+        return String.valueOf(number);
     }
 
     public static String convertUrlDownloadTrack(String url) {
