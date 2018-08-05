@@ -6,4 +6,7 @@
     <string name="title_playlist">Playlist</string>
     <string name="title_search">Sreach</string>
     <string name="search_message">Type here to search</string>
+    <string name="no_internet">internet not avaiable</string>
+    <string name="genres">Genres</string>
+    <string name="msg_listen_all">Listen all</string>
 </resources>

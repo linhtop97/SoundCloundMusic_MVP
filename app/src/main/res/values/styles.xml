@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/sc.theme.colorPrimary</item>
         <item name="colorPrimaryDark">@color/sc.theme.colorPrimaryDark</item>
         <item name="colorAccent">@color/sc.theme.colorAccent</item>
-        <item name="android:textColorPrimary">@color/sc.theme.colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/sc.theme.textColorSecondary</item>
         <item name="android:textColorSecondary">@color/sc.theme.textColorSecondary</item>
 
         <item name="colorControlNormal">?attr/colorAccent</item>
