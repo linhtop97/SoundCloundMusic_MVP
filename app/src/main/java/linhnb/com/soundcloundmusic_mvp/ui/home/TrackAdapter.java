@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -19,12 +20,13 @@ import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.R;
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
+import linhnb.com.soundcloundmusic_mvp.source.remote.TrackDownloadManager;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.IAdapterView;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.ListAdapter;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.OnLoadMoreListener;
 import linhnb.com.soundcloundmusic_mvp.utils.StringUtil;
 
-public class TrackAdapter extends ListAdapter<Track> {
+public class TrackAdapter extends ListAdapter<Track> implements TrackDownloadManager.DownloadListener {
 
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
@@ -94,6 +96,17 @@ public class TrackAdapter extends ListAdapter<Track> {
         isLoading = false;
     }
 
+    @Override
+    public void onDownloadError(String msg) {
+        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDownloading() {
+        Toast.makeText(mContext, mContext.getString(R.string.msg_downloading),
+                Toast.LENGTH_SHORT).show();
+    }
+
     private class LoadingViewHolder extends RecyclerView.ViewHolder {
 
         private ProgressBar progressBar;
@@ -124,6 +137,7 @@ public class TrackAdapter extends ListAdapter<Track> {
             mTextLikeCount = itemView.findViewById(R.id.text_number_favorite);
             mTextPlaybackCount = itemView.findViewById(R.id.text_number_play);
             mImageButtonOption = itemView.findViewById(R.id.img_button_options);
+            setupOptionsMenu();
             mLastItemClickPosition = getAdapterPosition();
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -165,6 +179,9 @@ public class TrackAdapter extends ListAdapter<Track> {
                             switch (item.getItemId()) {
                                 case R.id.action_download:
                                     if (popupMenu.getMenu().getItem(0).getTitle().equals(mContext.getString(R.string.action_download))) {
+                                        new TrackDownloadManager(mContext,
+                                                TrackAdapter.this)
+                                                .download(mTrack);
                                     }
 
                                     return true;

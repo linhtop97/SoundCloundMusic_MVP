@@ -21,6 +21,6 @@ public class Constant {
     // String
     public static final String BREAK_LINE = "\n";
     public static final String INTERNET_NOT_AVAIABLE = "internet not avaiable";
-
+    public static final String FILE_EXTENTION = ".mp3";
     public static final String ARGUMENT_TIME_DELAY = "ARGUMENT_PLAY_ANIM";
 }

@@ -16,7 +16,9 @@
     <string name="no_item_more">No item more</string>
     <string name="track_copyrighted">Track Copyrighted</string>
     <string name="action_download">Download This Track</string>
-
+    <string name="msg_cant_download">Can\'t download</string>
+    <string name="msg_downloading">Dowloading…</string>
+q
     <string-array name="music_genres">
         <item>Pop</item>
         <item>All music</item>
