@@ -6,6 +6,8 @@
     <color name="sc.theme.colorPrimary">#FFFFFF</color>
     <color name="sc.theme.colorPrimaryDark">#00796b</color>
     <color name="sc.theme.colorAccent">#00796b</color>
+    <color name="sc.theme.colorBackGroundRV">#3364ccc0</color>
+
 
     <color name="sc.theme.textColorPrimary">#223331</color>
     <color name="sc.theme.textColorSecondary">#223331</color>
