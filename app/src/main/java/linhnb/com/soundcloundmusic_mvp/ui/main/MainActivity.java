@@ -10,12 +10,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
 import linhnb.com.soundcloundmusic_mvp.R;
+import linhnb.com.soundcloundmusic_mvp.data.model.Track;
+import linhnb.com.soundcloundmusic_mvp.ui.home.HomeFragment;
+import linhnb.com.soundcloundmusic_mvp.ui.playmusic.PlayMusicFragment;
 import linhnb.com.soundcloundmusic_mvp.ui.splash.SplashFragment;
 import linhnb.com.soundcloundmusic_mvp.utils.FragmentManagerUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View {
+public class MainActivity extends AppCompatActivity implements MainContract.View, HomeFragment.IPlayTrack {
 
     private final int SPLASH_DISPLAY_LENGTH = 3500;
     private MainContract.Presenter mPresenter;
@@ -72,5 +77,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
         });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void playTrack(List<Track> tracks, int position) {
+
+        PlayMusicFragment playMusicFragment = PlayMusicFragment.newInstance();
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentManagerUtils.addFragment(manager, playMusicFragment,
+                R.id.main_content, playMusicFragment.getClass().getName(), true);
     }
 }
