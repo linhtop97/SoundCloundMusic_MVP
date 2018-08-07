@@ -30,14 +30,10 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
         MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener {
     //khởi tạo vị trí bài hát mặc định
     public static final int NO_POSITION = -1;
-    public static final String ACTION_MAIN = "linhnb.com.soundcloundmusic_mvp.ACTION_MAIN";
-    public static final String ACTION_PLAY_NOW = "linhnb.com.soundcloundmusic_mvp.ACTION_PLAY_NOW";
-    private static final String ACTION_PLAY_TOGGLE = "linhnb.com.soundcloundmusic_mvp.ACTION.PLAY_TOGGLE";
-    private static final String ACTION_PLAY_PREVIOUS = "linhnb.com.soundcloundmusic_mvp.ACTION_PLAY_PREVIOUS";
-    private static final String ACTION_PLAY_NEXT = "linhnb.com.soundcloundmusic_mvp.ACTION.PLAY_NEXT";
-    private static final String ACTION_STOP_SERVICE = "linhnb.com.soundcloundmusic_mvp.ACTION.STOP_SERVICE";
+
     private static final int NOTIFICATION_ID = 1;
 
+    private RemoteViews mContentViewBig, mContentViewSmall;
     private Bitmap mBitmap;
     private MediaPlayer mMediaPlayer;
     private List<Track> mTracks;
@@ -64,7 +60,7 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
                 return START_STICKY;
             }
             switch (action) {
-                case ACTION_MAIN:
+                case Constant.ACTION_MAIN:
                     ArrayList<Track> tracks = intent.getParcelableArrayListExtra(Constant.EXTRA_LIST_TRACK);
                     int position = intent.getIntExtra(Constant.EXTRA_POSITION, 0);
                     if (mMediaPlayer.isPlaying()
@@ -75,29 +71,30 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
                         showNotification();
                     }
                     break;
-                case ACTION_PLAY_TOGGLE:
+                case Constant.ACTION_PLAY_TOGGLE:
                     if (isPlaying()) {
                         pause();
                     } else {
                         play();
                     }
                     break;
-                case ACTION_PLAY_NEXT:
+                case Constant.ACTION_PLAY_NEXT:
                     playNext();
                     break;
-                case ACTION_PLAY_PREVIOUS:
+                case Constant.ACTION_PLAY_PREVIOUS:
                     playPrevious();
                     break;
-                case ACTION_PLAY_NOW:
+                case Constant.ACTION_PLAY_NOW:
                     position = intent.getIntExtra(Constant.EXTRA_POSITION, 0);
                     if (mMediaPlayer.isPlaying()
                             && checkTrackPlay(mTracks.get(position))) {
                         break;
                     } else {
+                        mPlayingindex = position;
                         play(position);
                     }
                     break;
-                case ACTION_STOP_SERVICE:
+                case Constant.ACTION_STOP_SERVICE:
                     if (isPlaying()) {
                         pause();
                     }
@@ -219,7 +216,6 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
         mPlayingindex = position;
         Log.d("size track", mTracks.size() + "");
         play(mTracks.get(mPlayingindex));
-        showNotification();
         play();
         notifyPlayPrevious(mTracks.get(mPlayingindex));
     }
@@ -332,75 +328,218 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
 
     }
 
+//    private void showNotification() {
+//        Track track = getPlayingTrack();
+//        Intent notIntent = new Intent(this, MainActivity.class);
+//        notIntent.setAction(ACTION_MAIN);
+//        PreferenceManager.setIsPlaying(this, isPlaying());
+//        notIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        PendingIntent pendInt = PendingIntent.getActivity(getApplicationContext(),
+//                0,
+//                notIntent, 0);
+//
+//        Intent previousIntent = new Intent(getApplicationContext(), MusicService.class);
+//        previousIntent.setAction(ACTION_PLAY_PREVIOUS);
+//        PendingIntent ppreviousIntent = PendingIntent.getService(getApplicationContext(),
+//                0,
+//                previousIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        Intent playIntent = new Intent(getApplicationContext(), MusicService.class);
+//        playIntent.setAction(ACTION_PLAY_TOGGLE);
+//        PendingIntent pplayIntent = PendingIntent.getService(getApplicationContext(),
+//                0,
+//                playIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        Intent nextIntent = new Intent(getApplicationContext(), MusicService.class);
+//        nextIntent.setAction(ACTION_PLAY_NEXT);
+//        PendingIntent pnextIntent = PendingIntent.getService(getApplicationContext(),
+//                0,
+//                nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        Intent dismissIntent = new Intent(getApplicationContext(), MusicService.class);
+//        dismissIntent.setAction(ACTION_STOP_SERVICE);
+//        PendingIntent pdismisIntent = PendingIntent.getService(getApplicationContext(),
+//                0,
+//                dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        int iconPlayPause;
+//        if (isPlaying()) {
+//            iconPlayPause = R.drawable.ic_pause;
+//        } else {
+//            iconPlayPause = R.drawable.ic_play_toogle;
+//        }
+//        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.remote_view_music_player_small);
+//        remoteViews.setImageViewResource(R.id.img_button_close, R.drawable.ic_remote_view_close);
+//        remoteViews.setImageViewResource(R.id.img_button_play_toggle, iconPlayPause);
+//        remoteViews.setImageViewResource(R.id.img_button_play_previous, R.drawable.ic_play_previous);
+//        remoteViews.setImageViewResource(R.id.img_button_play_next, R.drawable.ic_play_next);
+//        //choox nay
+//        new FetchBitmapFromUrl(this).execute(track.getArtworkUrl());
+//        if (mBitmap == null) {
+//            remoteViews.setImageViewResource(R.id.image_view_album, R.mipmap.ic_launcher);
+//        } else {
+//            remoteViews.setImageViewBitmap(R.id.image_view_album, mBitmap);
+//        }
+//        remoteViews.setTextViewText(R.id.text_view_name, track.getTitle());
+//        remoteViews.setTextViewText(R.id.text_view_artist, track.getUserName());
+//
+//
+//        remoteViews.setOnClickPendingIntent(R.id.img_button_close, pdismisIntent);
+//        remoteViews.setOnClickPendingIntent(R.id.img_button_play_previous, ppreviousIntent);
+//        remoteViews.setOnClickPendingIntent(R.id.img_button_play_next, pnextIntent);
+//        remoteViews.setOnClickPendingIntent(R.id.img_button_play_toggle, pplayIntent);
+//
+//
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+//                getApplicationContext(), "abc");
+//        builder.setSmallIcon(R.mipmap.ic_launcher_round)
+//                .setContentTitle(track.getTitle())
+//                .setContentText(track.getUserName())
+//                .setContentIntent(pendInt)
+//                .setContent(remoteViews);
+//        Notification not = builder.build();
+//        startForeground(NOTIFICATION_ID, not);
+//    }
+//
+//    private void setUpRemoteView(RemoteViews remoteView) {
+//        remoteView.setImageViewResource(R.id.image_view_close, R.drawable.ic_remote_view_close);
+//        remoteView.setImageViewResource(R.id.image_view_play_last, R.drawable.ic_remote_view_play_last);
+//        remoteView.setImageViewResource(R.id.image_view_play_next, R.drawable.ic_remote_view_play_next);
+//
+//        remoteView.setOnClickPendingIntent(R.id.button_close, getPendingIntent(ACTION_STOP_SERVICE));
+//        remoteView.setOnClickPendingIntent(R.id.button_play_last, getPendingIntent(ACTION_PLAY_LAST));
+//        remoteView.setOnClickPendingIntent(R.id.button_play_next, getPendingIntent(ACTION_PLAY_NEXT));
+//        remoteView.setOnClickPendingIntent(R.id.button_play_toggle, getPendingIntent(ACTION_PLAY_TOGGLE));
+//    }
+//
+//    private void updateRemoteViews(RemoteViews remoteView) {
+//        Track track = getPlayingTrack();
+//        if (track != null) {
+//            remoteView.setTextViewText(R.id.text_view_name, track.getTitle());
+//            remoteView.setTextViewText(R.id.text_view_artist, track.getUserName());
+//        }
+//        remoteView.setImageViewResource(R.id.image_view_play_toggle, isPlaying()
+//                ? R.drawable.ic_pause : R.drawable.ic_play_toogle);
+//        Bitmap album = AlbumUtils.parseAlbum(getPlayingSong());
+//        if (album == null) {
+//            remoteView.setImageViewResource(R.id.image_view_album, R.mipmap.ic_launcher);
+//        } else {
+//            remoteView.setImageViewBitmap(R.id.image_view_album, album);
+//
+//        }
+//    }
+//    private RemoteViews getSmallContentView() {
+//        if (mContentViewSmall == null) {
+//            mContentViewSmall = new RemoteViews(getPackageName(), R.layout.remote_view_music_player_small);
+//        }
+//        return mContentViewSmall;
+//    }
+//
+//    private RemoteViews getBigContentView() {
+//        if (mContentViewBig == null) {
+//            mContentViewBig = new RemoteViews(getPackageName(), R.layout.remote_view_music_player);
+//        }
+//        return mContentViewBig;
+//    }
+    // Notification
+
+    /**
+     * Show a notification while this service is running.
+     */
     private void showNotification() {
-        Track track = getPlayingTrack();
         Intent notIntent = new Intent(this, MainActivity.class);
-        notIntent.setAction(ACTION_MAIN);
+        notIntent.setAction(Constant.ACTION_MAIN);
         PreferenceManager.setIsPlaying(this, isPlaying());
         notIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendInt = PendingIntent.getActivity(getApplicationContext(),
-                0,
-                notIntent, 0);
+        // The PendingIntent to launch our activity if the user selects this notification
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notIntent, 0);
+
+        // Set the info for the views that show in the notification panel.
+        Notification notification = new NotificationCompat.Builder(this, "abc")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)  // the status icon
+                .setWhen(System.currentTimeMillis())  // the time stamp
+                .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
+                .setCustomContentView(getSmallContentView())
+                .setCustomBigContentView(getBigContentView())
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setOngoing(true)
+                .build();
+        // Send the notification.
+        startForeground(NOTIFICATION_ID, notification);
+    }
+
+    private RemoteViews getSmallContentView() {
+        if (mContentViewSmall == null) {
+            mContentViewSmall = new RemoteViews(getPackageName(), R.layout.remote_view_music_player_small);
+            setUpRemoteView(mContentViewSmall);
+        }
+        updateRemoteViews(mContentViewSmall);
+        return mContentViewSmall;
+    }
+
+    private RemoteViews getBigContentView() {
+        if (mContentViewBig == null) {
+            mContentViewBig = new RemoteViews(getPackageName(), R.layout.remote_view_music_player);
+            setUpRemoteView(mContentViewBig);
+        }
+        updateRemoteViews(mContentViewBig);
+        return mContentViewBig;
+    }
+
+    private void setUpRemoteView(RemoteViews remoteView) {
+        remoteView.setImageViewResource(R.id.image_view_close, R.drawable.ic_remote_view_close);
+        remoteView.setImageViewResource(R.id.image_view_play_previous, R.drawable.ic_play_previous);
+        remoteView.setImageViewResource(R.id.image_view_play_next, R.drawable.ic_play_next);
 
         Intent previousIntent = new Intent(getApplicationContext(), MusicService.class);
-        previousIntent.setAction(ACTION_PLAY_PREVIOUS);
+        previousIntent.setAction(Constant.ACTION_PLAY_PREVIOUS);
         PendingIntent ppreviousIntent = PendingIntent.getService(getApplicationContext(),
                 0,
                 previousIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent playIntent = new Intent(getApplicationContext(), MusicService.class);
-        playIntent.setAction(ACTION_PLAY_TOGGLE);
+        playIntent.setAction(Constant.ACTION_PLAY_TOGGLE);
         PendingIntent pplayIntent = PendingIntent.getService(getApplicationContext(),
                 0,
                 playIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent nextIntent = new Intent(getApplicationContext(), MusicService.class);
-        nextIntent.setAction(ACTION_PLAY_NEXT);
+        nextIntent.setAction(Constant.ACTION_PLAY_NEXT);
         PendingIntent pnextIntent = PendingIntent.getService(getApplicationContext(),
                 0,
                 nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent dismissIntent = new Intent(getApplicationContext(), MusicService.class);
-        dismissIntent.setAction(ACTION_STOP_SERVICE);
+        dismissIntent.setAction(Constant.ACTION_STOP_SERVICE);
         PendingIntent pdismisIntent = PendingIntent.getService(getApplicationContext(),
                 0,
                 dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        int iconPlayPause;
-        if (isPlaying()) {
-            iconPlayPause = R.drawable.ic_pause;
-        } else {
-            iconPlayPause = R.drawable.ic_play_toogle;
-        }
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.remote_view_music_player_small);
-        remoteViews.setImageViewResource(R.id.img_button_close, R.drawable.ic_remote_view_close);
-        remoteViews.setImageViewResource(R.id.img_button_play_toggle, iconPlayPause);
-        remoteViews.setImageViewResource(R.id.img_button_play_previous, R.drawable.ic_play_previous);
-        remoteViews.setImageViewResource(R.id.img_button_play_next, R.drawable.ic_play_next);
-        //choox nay
-        new FetchBitmapFromUrl(this).execute(track.getArtworkUrl());
-        if (mBitmap == null) {
-            remoteViews.setImageViewResource(R.id.image_view_album, R.mipmap.ic_launcher);
-        } else {
-            remoteViews.setImageViewBitmap(R.id.image_view_album, mBitmap);
-        }
-        remoteViews.setTextViewText(R.id.text_view_name, track.getTitle());
-        remoteViews.setTextViewText(R.id.text_view_artist, track.getUserName());
-
-        remoteViews.setOnClickPendingIntent(R.id.img_button_close, pdismisIntent);
-        remoteViews.setOnClickPendingIntent(R.id.img_button_play_previous, ppreviousIntent);
-        remoteViews.setOnClickPendingIntent(R.id.img_button_play_next, pnextIntent);
-        remoteViews.setOnClickPendingIntent(R.id.img_button_play_toggle, pplayIntent);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(
-                getApplicationContext(), "abc");
-        builder.setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentTitle(track.getTitle())
-                .setContentText(track.getUserName())
-                .setContentIntent(pendInt)
-                .setContent(remoteViews);
-        Notification not = builder.build();
-        startForeground(NOTIFICATION_ID, not);
+        remoteView.setOnClickPendingIntent(R.id.button_close, pdismisIntent);
+        remoteView.setOnClickPendingIntent(R.id.button_play_previous, ppreviousIntent);
+        remoteView.setOnClickPendingIntent(R.id.button_play_next, pnextIntent);
+        remoteView.setOnClickPendingIntent(R.id.button_play_toggle, pplayIntent);
     }
 
+    private void updateRemoteViews(RemoteViews remoteView) {
+        Track currentTrack = getPlayingTrack();
+        if (currentTrack != null) {
+            remoteView.setTextViewText(R.id.text_view_name, currentTrack.getTitle());
+            remoteView.setTextViewText(R.id.text_view_artist, currentTrack.getUserName());
+        }
+        remoteView.setImageViewResource(R.id.image_view_play_toggle, isPlaying()
+                ? R.drawable.ic_pause : R.drawable.ic_play_toogle);
+        new FetchBitmapFromUrl(this).execute(currentTrack.getArtworkUrl());
+        if (mBitmap == null) {
+            remoteView.setImageViewResource(R.id.image_view_album, R.mipmap.ic_launcher);
+        } else {
+            remoteView.setImageViewBitmap(R.id.image_view_album, mBitmap);
+        }
+    }
+
+    // PendingIntent
+
+    private PendingIntent getPendingIntent(String action) {
+        return PendingIntent.getService(this, 0, new Intent(action), 0);
+    }
 
     public void setBitmap(Bitmap bm) {
         mBitmap = bm;

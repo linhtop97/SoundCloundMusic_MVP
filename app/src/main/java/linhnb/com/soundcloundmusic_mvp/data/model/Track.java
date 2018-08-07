@@ -190,5 +190,7 @@ public class Track implements Parcelable {
         public static final String TRACK = "track";
         public static final String USERNAME = "username";
         public static final String LIKES_COUNT = "likes_count";
+        public static final String LARGE_IMAGE_SIZE = "large";
+        public static final String BETTER_IMAGE_SIZE = "original";
     }
 }

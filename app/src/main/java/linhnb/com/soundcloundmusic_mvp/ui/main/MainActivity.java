@@ -11,8 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.gson.Gson;
-
 import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.R;
@@ -21,8 +19,8 @@ import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
 import linhnb.com.soundcloundmusic_mvp.ui.home.HomeFragment;
 import linhnb.com.soundcloundmusic_mvp.ui.maincontent.MainFragment;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.PlayMusicFragment;
-import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.MusicService;
 import linhnb.com.soundcloundmusic_mvp.ui.splash.SplashFragment;
+import linhnb.com.soundcloundmusic_mvp.utils.Constant;
 import linhnb.com.soundcloundmusic_mvp.utils.FragmentManagerUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         //get intent here and open mainfragment  and next open playmusic fragment
         Intent intent = getIntent();
         String action = intent.getAction();
-        if (action != null && action.equals(MusicService.ACTION_MAIN)) {
+        if (action != null && action.equals(Constant.ACTION_MAIN)) {
             FragmentManager manager = getSupportFragmentManager();
             MainFragment fragment = MainFragment.newInstance(true);
             FragmentManagerUtils.addFragment(manager, fragment, R.id.main_content,
@@ -95,13 +93,30 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void playTrack(List<Track> tracks, int position) {
+    public void playTrack(int position) {
         PreferenceManager.setLastPosition(this, position);
-        PreferenceManager.putListTrack(this, new Gson().toJson(tracks));
+        List<Track> tracks = PreferenceManager.getListTrack(this);
         PreferenceManager.setImageUrl(this, tracks.get(position).getArtworkUrl());
         PlayMusicFragment playMusicFragment = PlayMusicFragment.newInstance(tracks);
         FragmentManager manager = getSupportFragmentManager();
         FragmentManagerUtils.addFragment(manager, playMusicFragment,
                 R.id.main_content, playMusicFragment.getClass().getName(), true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String action = intent.getAction();
+        if (action != null && action.equals(Constant.ACTION_MAIN)) {
+            FragmentManager manager = getSupportFragmentManager();
+            PlayMusicFragment musicFragment = PlayMusicFragment.newInstance(null);
+            FragmentManagerUtils.addFragment(manager, musicFragment, R.id.main_content,
+                    musicFragment.getClass().getName(), true);
+        }
     }
 }
