@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import linhnb.com.soundcloundmusic_mvp.utils.FragmentManagerUtils;
 
 public class MainFragment extends Fragment implements TabLayout.OnTabSelectedListener {
 
+    private static final String TAG = "MainFragment";
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private MainActivity mMainActivity;
@@ -60,6 +62,25 @@ public class MainFragment extends Fragment implements TabLayout.OnTabSelectedLis
             FragmentManagerUtils.addFragment(manager, musicFragment, R.id.main_content,
                     musicFragment.getClass().getName(), true);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onresum");
+        String action = mMainActivity.getIntent().getAction();
+        Log.d(TAG, action);
+        if (action != null && action.equals(Constant.ACTION_MAIN)) {
+            FragmentManager manager = mMainActivity.getSupportFragmentManager();
+            PlayMusicFragment musicFragment = PlayMusicFragment.newInstance(null);
+            FragmentManagerUtils.addFragment(manager, musicFragment, R.id.main_content,
+                    musicFragment.getClass().getName(), true);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     private void initView(View view) {

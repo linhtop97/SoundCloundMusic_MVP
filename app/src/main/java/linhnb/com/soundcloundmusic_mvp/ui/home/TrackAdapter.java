@@ -33,7 +33,6 @@ public class TrackAdapter extends ListAdapter<Track> implements TrackDownloadMan
     private OnLoadMoreListener onLoadMoreListener;
     private boolean isLoading;
     private int visibleThreshold = 5;
-    private int mLastItemClickPosition = RecyclerView.NO_POSITION;
 
 
     public TrackAdapter(Context context, RecyclerView recyclerView, List<Track> data) {
@@ -88,10 +87,6 @@ public class TrackAdapter extends ListAdapter<Track> implements TrackDownloadMan
         this.onLoadMoreListener = mOnLoadMoreListener;
     }
 
-    public int getLastItemClickPosition() {
-        return mLastItemClickPosition;
-    }
-
     public void setLoaded() {
         isLoading = false;
     }
@@ -141,7 +136,7 @@ public class TrackAdapter extends ListAdapter<Track> implements TrackDownloadMan
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mItemClickListener.onItemClick(mData, getAdapterPosition());
+                    mItemClickListener.onItemClick(getAdapterPosition());
                 }
             });
         }

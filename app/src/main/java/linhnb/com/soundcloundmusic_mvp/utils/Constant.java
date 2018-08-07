@@ -31,4 +31,12 @@ public class Constant {
     //argument
     public static final String ARGUMENT_TRACKS_LIST = "ARGUMENT_TRACKS_LIST";
     public static final String ARGUMENT_IS_OPEN = "ARGUMENT_IS_OPEN";
+
+    //Action
+    public static final String ACTION_MAIN = "linhnb.com.soundcloundmusic_mvp.ACTION_MAIN";
+    public static final String ACTION_PLAY_NOW = "linhnb.com.soundcloundmusic_mvp.ACTION_PLAY_NOW";
+    public static final String ACTION_PLAY_TOGGLE = "linhnb.com.soundcloundmusic_mvp.ACTION.PLAY_TOGGLE";
+    public static final String ACTION_PLAY_PREVIOUS = "linhnb.com.soundcloundmusic_mvp.ACTION_PLAY_PREVIOUS";
+    public static final String ACTION_PLAY_NEXT = "linhnb.com.soundcloundmusic_mvp.ACTION.PLAY_NEXT";
+    public static final String ACTION_STOP_SERVICE = "linhnb.com.soundcloundmusic_mvp.ACTION.STOP_SERVICE";
 }

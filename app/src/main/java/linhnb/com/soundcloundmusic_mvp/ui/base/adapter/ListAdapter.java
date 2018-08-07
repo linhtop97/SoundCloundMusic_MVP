@@ -44,6 +44,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
     public void setData(List<T> data) {
         mData = data;
+        notifyDataSetChanged();
     }
 
     public void addData(List<T> data) {
@@ -52,6 +53,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
         } else {
             mData.addAll(data);
         }
+        notifyDataSetChanged();
     }
 
     public T getItem(int position) {

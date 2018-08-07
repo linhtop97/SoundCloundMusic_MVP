@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,14 @@ public class PlayAnimationFragment extends Fragment implements PlayAnimContract.
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (PreferenceManager.getIsPlaying(getActivity())) {
+            mImageView.startAnimation(mAnimation);
+        }
+    }
+
     private void init(View view) {
         mImageView = view.findViewById(R.id.img_track);
         mAnimation = AnimationUtils.loadAnimation(mImageView.getContext(), R.anim.rotation);
@@ -111,5 +120,17 @@ public class PlayAnimationFragment extends Fragment implements PlayAnimContract.
     @Override
     public void cancelAnimation() {
         mImageView.clearAnimation();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("restart", "rt");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d("detack", "detack");
     }
 }

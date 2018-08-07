@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import linhnb.com.soundcloundmusic_mvp.data.model.Track;
 import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
 import linhnb.com.soundcloundmusic_mvp.source.remote.TrackDownloadManager;
 import linhnb.com.soundcloundmusic_mvp.ui.main.MainActivity;
+import linhnb.com.soundcloundmusic_mvp.ui.playmusic.listtrack.ListTrackFragment;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.playanim.PlayAnimationFragment;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.IPlay;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.MusicService;
@@ -183,6 +185,7 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
         new PlayMusicPresenter(getActivity(), mTracks, this).subscribe();
     }
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -214,11 +217,32 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
 
     @Override
     public void onPageSelected(int position) {
+        if (position != PageType.LIST) {
+            Fragment fragment = getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.vp_music + ":" + mViewPager.getCurrentItem());
+            if (fragment != null && PageType.LIST == mViewPager.getCurrentItem()) {
+                PreferenceManager.setImageUrl(getActivity(), PreferenceManager.getImageUrl(mMainActivity));
+                ListTrackFragment listTrackFragment = (ListTrackFragment) fragment;
+                LinearLayoutManager linearLayoutManager = listTrackFragment.getLayoutManager();
+                linearLayoutManager.scrollToPosition(PreferenceManager.getLastPosition(mMainActivity));
+            }
+        }
         if (position != PageType.PLAY) {
             mImageButtonDownload.setVisibility(View.GONE);
             mImageButtonAlarm.setVisibility(View.GONE);
 
         } else {
+            Fragment fragment = getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.vp_music + ":" + mViewPager.getCurrentItem());
+            if (fragment != null && PageType.PLAY == mViewPager.getCurrentItem()) {
+                PreferenceManager.setImageUrl(getActivity(), PreferenceManager.getImageUrl(mMainActivity));
+                PlayAnimationFragment playAnimationFragment = (PlayAnimationFragment) fragment;
+                playAnimationFragment.setImage();
+                if (!mPlayer.isPlaying()) {
+                    playAnimationFragment.cancelAnimation();
+                } else {
+                    playAnimationFragment.startAnimation();
+                }
+
+            }
             mImageButtonDownload.setVisibility(View.VISIBLE);
             mImageButtonAlarm.setVisibility(View.VISIBLE);
         }
@@ -313,7 +337,6 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
         if (mPlayer != null) {
             onTrackUpdated(mPlayer.getPlayingTrack());
         }
-
     }
 
     @Override
@@ -438,7 +461,7 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
         // Step 3: Duration
         mTextTotalTime.setText(StringUtil.formatDuration(track.getDuration()));
         mTextCurrentTime.setText(StringUtil.formatDuration(mPlayer.getProgress()));
-// set ảnh cho cái đĩa, chạy animation
+        // set ảnh cho cái đĩa, chạy animation
         Fragment fragment = null;
 
         if (this.isAdded()) {

@@ -19,9 +19,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import linhnb.com.soundcloundmusic_mvp.Injection;
 import linhnb.com.soundcloundmusic_mvp.R;
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
 import linhnb.com.soundcloundmusic_mvp.source.TracksRepository;
+import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
 import linhnb.com.soundcloundmusic_mvp.source.local.TracksLocalDataSource;
 import linhnb.com.soundcloundmusic_mvp.source.remote.TracksRemoteDataSource;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.OnItemClickListener;
@@ -89,11 +91,18 @@ public class HomeFragment extends Fragment implements HomeContract.View, Adapter
 
     @Override
     public void showTracks(List<Track> tracks) {
+        PreferenceManager.putListTrack(Injection.provideContext(), tracks);
         mTextViewNoInternet.setVisibility(View.GONE);
         mTracks = tracks;
         mSize = tracks.size();
         mContactMember = new ArrayListUtil<Track>().chiaContactVaoTungarrray(mTracks, 20);
-        mTrackList = new ArrayList<>();
+        if (mTrackList != null) {
+            if (mTrackList.size() != 0) {
+                mTrackList.clear();
+            }
+        } else {
+            mTrackList = new ArrayList<>();
+        }
         mTrackList.addAll(mContactMember.get(0));
         mTrackAdapter.setData(mTrackList);
         mRecyclerView.setVisibility(View.VISIBLE);
@@ -135,14 +144,13 @@ public class HomeFragment extends Fragment implements HomeContract.View, Adapter
 
     @Override
     public void onItemClick(int position) {
-
+        if (getActivity() instanceof IPlayTrack) {
+            ((IPlayTrack) getActivity()).playTrack(position);
+        }
     }
 
     @Override
     public void onItemClick(List list, int position) {
-        if (getActivity() instanceof IPlayTrack) {
-            ((IPlayTrack) getActivity()).playTrack(list, position);
-        }
     }
 
     @Override
@@ -166,6 +174,6 @@ public class HomeFragment extends Fragment implements HomeContract.View, Adapter
     }
 
     public interface IPlayTrack {
-        void playTrack(List<Track> tracks, int position);
+        void playTrack(int position);
     }
 }

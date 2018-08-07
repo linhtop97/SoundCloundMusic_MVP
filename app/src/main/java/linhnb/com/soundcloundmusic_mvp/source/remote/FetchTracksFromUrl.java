@@ -99,11 +99,19 @@ public class FetchTracksFromUrl extends AsyncTask<String, Void, List<Track>> {
         return tracks;
     }
 
-    protected Track parseJsonObjectToTrackObject(JSONObject jsonTrack) {
+    private String parseArtworkUrlToBetter(String artworkUrl) {
+        if (artworkUrl != null) {
+            return artworkUrl.replace(Track.TrackEntity.LARGE_IMAGE_SIZE,
+                    Track.TrackEntity.BETTER_IMAGE_SIZE);
+        }
+        return null;
+    }
+
+    private Track parseJsonObjectToTrackObject(JSONObject jsonTrack) {
         Track track = new Track();
         try {
             JSONObject jsonUser = jsonTrack.getJSONObject(Track.TrackEntity.USER);
-            track.setArtworkUrl(jsonTrack.optString(Track.TrackEntity.ARTWORK_URL));
+            track.setArtworkUrl(parseArtworkUrlToBetter(jsonTrack.optString(Track.TrackEntity.ARTWORK_URL)));
             track.setDownloadable(jsonTrack.optBoolean(Track.TrackEntity.DOWNLOADABLE));
             track.setDownloadUrl(jsonTrack.optString(Track.TrackEntity.DOWNLOAD_URL));
             track.setDuration(jsonTrack.optInt(Track.TrackEntity.DURATION));
