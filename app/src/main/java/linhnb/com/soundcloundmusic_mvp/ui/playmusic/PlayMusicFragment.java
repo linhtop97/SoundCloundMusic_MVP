@@ -1,7 +1,13 @@
 package linhnb.com.soundcloundmusic_mvp.ui.playmusic;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,14 +21,29 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.Injection;
 import linhnb.com.soundcloundmusic_mvp.R;
+import linhnb.com.soundcloundmusic_mvp.data.model.Track;
+import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
+import linhnb.com.soundcloundmusic_mvp.source.remote.TrackDownloadManager;
 import linhnb.com.soundcloundmusic_mvp.ui.main.MainActivity;
+import linhnb.com.soundcloundmusic_mvp.ui.playmusic.playanim.PlayAnimationFragment;
+import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.IPlay;
+import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.MusicService;
+import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.PlayMode;
+import linhnb.com.soundcloundmusic_mvp.utils.Constant;
+import linhnb.com.soundcloundmusic_mvp.utils.StringUtil;
 
-public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener {
+public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener, IPlay.Callback, PlayMusicContract.View, TrackDownloadManager.DownloadListener {
 
     private static final String TAG = "PlayMusicFragment";
+    private static final long UPDATE_PROGRESS_INTERVAL = 1000;
+    private List<Track> mTracks;
     private int mCurrentPosition;
     private MainActivity mMainActivity;
     private ViewPager mViewPager;
@@ -35,7 +56,7 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
     private TextView mTextArtist;
     private TextView mTextTotalTime;
     private TextView mTextCurrentTime;
-    private ImageButton mImageButtonDown;
+    private ImageButton mImageButtonBack;
     private ImageButton mImageButtonPrevious;
     private ImageButton mImageButtonPlayToggle;
     private ImageButton mImageButtonNext;
@@ -44,10 +65,52 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
     private ImageButton mImageButtonPlayModeToggle;
     private ImageButton mImageButtonAlarm;
     private SeekBar mSeekBarProgress;
+    private PlayMusicContract.Presenter mPresenter;
+    private MusicService mPlayer;
 
+    private Handler mHandler = new Handler();
 
-    public static PlayMusicFragment newInstance() {
-        return new PlayMusicFragment();
+    private Runnable mProgressCallback = new Runnable() {
+        @Override
+        public void run() {
+            if (isDetached()) return;
+            if (mPlayer.isPlaying()) {
+                int progress = (int) (mSeekBarProgress.getMax()
+                        * ((float) mPlayer.getProgress() / (float) getCurrentSongDuration()));
+                updateProgressTextWithDuration(mPlayer.getProgress());
+                if (progress >= 0 && progress <= mSeekBarProgress.getMax()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        mSeekBarProgress.setProgress(progress, true);
+                    } else {
+                        mSeekBarProgress.setProgress(progress);
+                    }
+                    mHandler.postDelayed(this, UPDATE_PROGRESS_INTERVAL);
+                }
+            }
+        }
+    };
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            MusicService.MusicBinder musicBinder = (MusicService.MusicBinder) iBinder;
+            mPlayer = musicBinder.getService();
+            mPlayer.registerCallback(PlayMusicFragment.this);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mPlayer = null;
+            mPlayer.unregisterCallback(PlayMusicFragment.this);
+        }
+    };
+
+    public static PlayMusicFragment newInstance(List<Track> tracks) {
+        PlayMusicFragment playMusicFragment = new PlayMusicFragment();
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(Constant.ARGUMENT_TRACKS_LIST, (ArrayList<? extends Parcelable>) tracks);
+        playMusicFragment.setArguments(args);
+        return playMusicFragment;
     }
 
     @Nullable
@@ -59,13 +122,15 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
     }
 
     private void initView() {
+        mTracks = getArguments().getParcelableArrayList(Constant.ARGUMENT_TRACKS_LIST);
+        mCurrentPosition = PreferenceManager.getLastPosition(getActivity());
         mTextTrackTitle = mViewRoot.findViewById(R.id.text_track_title);
         mTextArtist = mViewRoot.findViewById(R.id.text_artist);
         mTextTotalTime = mViewRoot.findViewById(R.id.textview_total_time);
         mTextCurrentTime = mViewRoot.findViewById(R.id.textview_current_time);
         mSeekBarProgress = mViewRoot.findViewById(R.id.seekbar_song);
-        mImageButtonDown = mViewRoot.findViewById(R.id.button_down);
-        mImageButtonDown.setOnClickListener(this);
+        mImageButtonBack = mViewRoot.findViewById(R.id.button_back);
+        mImageButtonBack.setOnClickListener(this);
         mImageButtonPrevious = mViewRoot.findViewById(R.id.button_previous);
         mImageButtonPrevious.setOnClickListener(this);
         mImageButtonPlayToggle = mViewRoot.findViewById(R.id.button_play_toggle);
@@ -87,6 +152,35 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
         setUpSliderDot();
         mViewPager.addOnPageChangeListener(this);
 
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mSeekBarProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    updateProgressTextWithProgress(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                mHandler.removeCallbacks(mProgressCallback);
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                seekTo(getDuration(seekBar.getProgress()));
+                if (mPlayer.isPlaying()) {
+                    mHandler.removeCallbacks(mProgressCallback);
+                    mHandler.post(mProgressCallback);
+                }
+            }
+        });
+
+        new PlayMusicPresenter(getActivity(), mTracks, this).subscribe();
     }
 
     @Override
@@ -143,6 +237,253 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
 
     @Override
     public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_back:
+                getActivity().getSupportFragmentManager().popBackStackImmediate();
+                break;
+            case R.id.button_play_toggle:
+                if (mPlayer.isPlaying()) {
+                    mPlayer.pause();
+                    mImageButtonPlayToggle.setImageResource(R.drawable.ic_play_toogle);
+                } else {
+                    mPlayer.play();
+                    mImageButtonPlayToggle.setImageResource(R.drawable.ic_pause);
+                }
+                break;
+            case R.id.button_play_mode_toggle:
+                if (mPlayer == null) return;
+                PlayMode current = PreferenceManager.lastPlayMode(getActivity());
+                PlayMode newMode = PlayMode.switchNextMode(current);
+                PreferenceManager.setPlayMode(getActivity(), newMode);
+                mPlayer.setPlayMode(newMode);
+                updatePlayMode(newMode);
+                break;
+            case R.id.button_next:
+                if (mPlayer == null) return;
+                mPlayer.playNext();
+                break;
+            case R.id.button_previous:
+                if (mPlayer == null) return;
+                mPlayer.playPrevious();
+                break;
+            case R.id.button_download:
+                new TrackDownloadManager(getActivity(), PlayMusicFragment.this)
+                        .download(PreferenceManager.getListTrack(getActivity()).get(PreferenceManager.getLastPosition(getActivity())));
+                break;
+            default:
+                break;
+        }
+    }
 
+    private int getCurrentSongDuration() {
+        Track currentTrack = mPlayer.getPlayingTrack();
+        int duration = 0;
+        if (currentTrack != null) {
+            duration = currentTrack.getDuration();
+        }
+        return duration;
+    }
+
+    private void updateProgressTextWithProgress(int progress) {
+        int targetDuration = getDuration(progress);
+        mTextCurrentTime.setText(StringUtil.formatDuration(targetDuration));
+    }
+
+    private void updateProgressTextWithDuration(int duration) {
+        mTextCurrentTime.setText(StringUtil.formatDuration(duration));
+    }
+
+    private int getDuration(int progress) {
+        return (int) (getCurrentSongDuration() * ((float) progress / mSeekBarProgress.getMax()));
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mPlayer != null && mPlayer.isPlaying()) {
+            mHandler.removeCallbacks(mProgressCallback);
+            mHandler.post(mProgressCallback);
+            startAnimation(true);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mPlayer != null) {
+            onTrackUpdated(mPlayer.getPlayingTrack());
+        }
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mHandler.removeCallbacks(mProgressCallback);
+    }
+
+    @Override
+    public void onDestroyView() {
+        mPresenter.unsubscribe();
+        super.onDestroyView();
+    }
+
+//    private void playTrack(Track track) {
+//        if (track == null) return;
+//        PreferenceManager.lastPlayMode(getActivity());
+//        mPlayer.play(track);
+//        onTrackUpdated(track);
+//    }
+//
+//    private void playTrack(List<Track> playList, int playIndex) {
+//        if (playList == null) return;
+//        PreferenceManager.lastPlayMode(getActivity());
+//        // boolean result =
+//        mPlayer.play(playList, playIndex);
+//
+//        Track track = playList.get(playIndex);
+//        onTrackUpdated(track);
+//    }
+
+    @Override
+    public void updatePlayMode(PlayMode playMode) {
+        if (playMode == null) {
+            playMode = PlayMode.getDefault();
+        }
+        switch (playMode) {
+            case LIST:
+                mImageButtonPlayModeToggle.setImageResource(R.drawable.ic_play_mode_list);
+                break;
+            case LOOP:
+                mImageButtonPlayModeToggle.setImageResource(R.drawable.ic_play_mode_loop);
+                break;
+            case SHUFFLE:
+                mImageButtonPlayModeToggle.setImageResource(R.drawable.ic_play_mode_shuffle);
+                break;
+            case SINGLE:
+                mImageButtonPlayModeToggle.setImageResource(R.drawable.ic_play_mode_single);
+                break;
+        }
+    }
+
+    public void updatePlayToggle(boolean play) {
+        mImageButtonPlayToggle.setImageResource(play ? R.drawable.ic_pause : R.drawable.ic_play_toogle);
+    }
+
+    @Override
+    public void onSwitchPrevious(@Nullable Track previous) {
+        onTrackUpdated(previous);
+    }
+
+    @Override
+    public void onSwitchNext(@Nullable Track next) {
+        onTrackUpdated(next);
+    }
+
+
+    @Override
+    public void onComplete(@Nullable Track next) {
+        onTrackUpdated(next);
+    }
+
+    @Override
+    public void onPlayStatusChanged(boolean isPlaying) {
+        updatePlayToggle(isPlaying);
+        startAnimation(isPlaying);
+        if (isPlaying) {
+            // imageViewAlbum.resumeRotateAnimation();
+            mHandler.removeCallbacks(mProgressCallback);
+            mHandler.post(mProgressCallback);
+        } else {
+            //imageViewAlbum.pauseRotateAnimation();
+            mHandler.removeCallbacks(mProgressCallback);
+        }
+    }
+
+    private void seekTo(int duration) {
+        mPlayer.seekTo(duration);
+    }
+
+    @Override
+    public void onServiceBound(MusicService service) {
+        mPlayer = service;
+        mPlayer.registerCallback(this);
+    }
+
+    @Override
+    public void onServiceUnbound() {
+        mPlayer.unregisterCallback(this);
+        mPlayer = null;
+    }
+
+    @Override
+    public void onTrackUpdated(Track track) {
+        if (track == null) {
+            seekTo(0);
+            mImageButtonPlayToggle.setImageResource(R.drawable.ic_play_toogle);
+            mSeekBarProgress.setProgress(0);
+            updateProgressTextWithProgress(0);
+            mHandler.removeCallbacks(mProgressCallback);
+            return;
+        }
+        mTextTrackTitle.setText(track.getTitle());
+        mTextArtist.setText(track.getUserName());
+        if (track.isDownloadable()) {
+            mImageButtonDownload.setImageResource(R.drawable.ic_download);
+            mImageButtonDownload.setClickable(true);
+        } else {
+            mImageButtonDownload.setImageResource(R.drawable.ic_download_grey);
+            mImageButtonDownload.setClickable(false);
+        }
+        // Step 3: Duration
+        mTextTotalTime.setText(StringUtil.formatDuration(track.getDuration()));
+        mTextCurrentTime.setText(StringUtil.formatDuration(mPlayer.getProgress()));
+// set ảnh cho cái đĩa, chạy animation
+        Fragment fragment = null;
+
+        if (this.isAdded()) {
+            fragment = getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.vp_music + ":" + mViewPager.getCurrentItem());
+            if (fragment != null && PageType.PLAY == mViewPager.getCurrentItem()) {
+                PreferenceManager.setImageUrl(getActivity(), track.getArtworkUrl());
+                PlayAnimationFragment playAnimationFragment = (PlayAnimationFragment) fragment;
+                playAnimationFragment.setImage();
+                playAnimationFragment.cancelAnimation();
+            }
+        }
+        mHandler.removeCallbacks(mProgressCallback);
+        if (mPlayer.isPlaying()) {
+            mHandler.post(mProgressCallback);
+            mImageButtonPlayToggle.setImageResource(R.drawable.ic_pause);
+        }
+    }
+
+    @Override
+    public void setPresenter(PlayMusicContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    public void startAnimation(boolean isPlaying) {
+        if (this.isAdded()) {
+            Fragment fragment = getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.vp_music + ":" + mViewPager.getCurrentItem());
+            if (fragment != null && PageType.PLAY == mViewPager.getCurrentItem()) {
+                PlayAnimationFragment playAnimationFragment = (PlayAnimationFragment) fragment;
+                if (isPlaying) {
+                    playAnimationFragment.startAnimation();
+                } else {
+                    playAnimationFragment.cancelAnimation();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onDownloadError(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDownloading() {
+        Toast.makeText(getActivity(), getActivity().getString(R.string.msg_downloading),
+                Toast.LENGTH_SHORT).show();
     }
 }

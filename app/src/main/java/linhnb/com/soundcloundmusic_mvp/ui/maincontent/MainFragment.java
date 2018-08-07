@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -15,6 +16,9 @@ import android.view.ViewGroup;
 
 import linhnb.com.soundcloundmusic_mvp.R;
 import linhnb.com.soundcloundmusic_mvp.ui.main.MainActivity;
+import linhnb.com.soundcloundmusic_mvp.ui.playmusic.PlayMusicFragment;
+import linhnb.com.soundcloundmusic_mvp.utils.Constant;
+import linhnb.com.soundcloundmusic_mvp.utils.FragmentManagerUtils;
 
 public class MainFragment extends Fragment implements TabLayout.OnTabSelectedListener {
 
@@ -23,8 +27,12 @@ public class MainFragment extends Fragment implements TabLayout.OnTabSelectedLis
     private MainActivity mMainActivity;
 
 
-    public static MainFragment newInstance() {
-        return new MainFragment();
+    public static MainFragment newInstance(Boolean isOpenPlayFragment) {
+        MainFragment fragment = new MainFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(Constant.ARGUMENT_IS_OPEN, isOpenPlayFragment);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -39,8 +47,19 @@ public class MainFragment extends Fragment implements TabLayout.OnTabSelectedLis
         View viewRoot = inflater.inflate(R.layout.fragment_main, container, false);
         initView(viewRoot);
         setupTabIcons();
-
         return viewRoot;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Boolean isOpen = getArguments().getBoolean(Constant.ARGUMENT_IS_OPEN);
+        if (isOpen) {
+            FragmentManager manager = mMainActivity.getSupportFragmentManager();
+            PlayMusicFragment musicFragment = PlayMusicFragment.newInstance(null);
+            FragmentManagerUtils.addFragment(manager, musicFragment, R.id.main_content,
+                    musicFragment.getClass().getName(), true);
+        }
     }
 
     private void initView(View view) {

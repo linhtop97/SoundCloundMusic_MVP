@@ -138,11 +138,10 @@ public class TrackAdapter extends ListAdapter<Track> implements TrackDownloadMan
             mTextPlaybackCount = itemView.findViewById(R.id.text_number_play);
             mImageButtonOption = itemView.findViewById(R.id.img_button_options);
             setupOptionsMenu();
-            mLastItemClickPosition = getAdapterPosition();
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mItemClickListener.onItemClick(mData, mLastItemClickPosition);
+                    mItemClickListener.onItemClick(mData, getAdapterPosition());
                 }
             });
         }
