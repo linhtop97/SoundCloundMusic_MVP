@@ -1,6 +1,7 @@
 package linhnb.com.soundcloundmusic_mvp.ui.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -10,12 +11,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.R;
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
+import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
 import linhnb.com.soundcloundmusic_mvp.ui.home.HomeFragment;
+import linhnb.com.soundcloundmusic_mvp.ui.maincontent.MainFragment;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.PlayMusicFragment;
+import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.MusicService;
 import linhnb.com.soundcloundmusic_mvp.ui.splash.SplashFragment;
 import linhnb.com.soundcloundmusic_mvp.utils.FragmentManagerUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -39,8 +45,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mToolbar.setTitle(getString(R.string.title_home));
         setSupportActionBar(mToolbar);
         mPresenter = new MainPresenter(this);
-        mPresenter.startPlashScreen();
-
+        //get intent here and open mainfragment  and next open playmusic fragment
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        if (action != null && action.equals(MusicService.ACTION_MAIN)) {
+            FragmentManager manager = getSupportFragmentManager();
+            MainFragment fragment = MainFragment.newInstance(true);
+            FragmentManagerUtils.addFragment(manager, fragment, R.id.main_content,
+                    fragment.getClass().getName(), false);
+        } else {
+            mPresenter.startPlashScreen();
+        }
     }
 
     @Override
@@ -81,8 +96,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void playTrack(List<Track> tracks, int position) {
-
-        PlayMusicFragment playMusicFragment = PlayMusicFragment.newInstance();
+        PreferenceManager.setLastPosition(this, position);
+        PreferenceManager.putListTrack(this, new Gson().toJson(tracks));
+        PreferenceManager.setImageUrl(this, tracks.get(position).getArtworkUrl());
+        PlayMusicFragment playMusicFragment = PlayMusicFragment.newInstance(tracks);
         FragmentManager manager = getSupportFragmentManager();
         FragmentManagerUtils.addFragment(manager, playMusicFragment,
                 R.id.main_content, playMusicFragment.getClass().getName(), true);

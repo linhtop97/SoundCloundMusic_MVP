@@ -6,7 +6,7 @@
     android:background="@drawable/background">
 
     <ImageButton
-        android:id="@+id/button_down"
+        android:id="@+id/button_back"
         android:layout_width="@dimen/dp_16"
         android:layout_height="@dimen/dp_16"
         android:layout_marginLeft="@dimen/dp_8"
@@ -38,7 +38,7 @@
         android:text="@string/app_name"
         android:textColor="#fff"
         android:textSize="@dimen/sp_14"
-        app:layout_constraintLeft_toRightOf="@id/button_down"
+        app:layout_constraintLeft_toRightOf="@id/button_back"
         app:layout_constraintRight_toLeftOf="@id/img_button_options"
         app:layout_constraintTop_toTopOf="parent"
 
@@ -54,7 +54,7 @@
         android:text="@string/msg_artist"
         android:textColor="#E0E0E0"
         android:textSize="@dimen/sp_14"
-        app:layout_constraintLeft_toRightOf="@id/button_down"
+        app:layout_constraintLeft_toRightOf="@id/button_back"
         app:layout_constraintRight_toLeftOf="@id/img_button_options"
         app:layout_constraintTop_toBottomOf="@id/text_track_title" />
 
@@ -73,7 +73,7 @@
         android:id="@+id/vp_music"
         android:layout_width="@dimen/dp_0"
         android:layout_height="@dimen/dp_0"
-        android:layout_marginBottom="@dimen/dp_12"
+        android:layout_marginBottom="@dimen/dp_24"
         app:layout_constraintBottom_toTopOf="@id/seekbar_song"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -101,15 +101,14 @@
         android:background="@null"
         android:scaleType="fitXY"
         android:src="@drawable/ic_alarm"
-        app:layout_constraintTop_toTopOf="@id/button_download"
         app:layout_constraintBottom_toBottomOf="@id/button_download"
-        app:layout_constraintRight_toLeftOf="@id/button_download" />
+        app:layout_constraintRight_toLeftOf="@id/button_download"
+        app:layout_constraintTop_toTopOf="@id/button_download" />
 
     <TextView
         android:id="@+id/textview_current_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_24"
         android:layout_marginLeft="@dimen/dp_8"
         android:text="@string/msg_00_00"
         android:textColor="#fff"
@@ -121,28 +120,25 @@
         android:id="@+id/seekbar_song"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_32"
-        android:layout_marginBottom="@dimen/dp_24"
         android:layout_marginLeft="@dimen/dp_8"
         android:layout_marginRight="@dimen/dp_8"
         android:thumbTint="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@id/button_play_toggle"
+        app:layout_constraintBottom_toBottomOf="@id/textview_current_time"
         app:layout_constraintLeft_toRightOf="@id/textview_current_time"
         app:layout_constraintRight_toLeftOf="@id/textview_total_time"
-        app:layout_constraintTop_toBottomOf="@id/vp_music" />
+        app:layout_constraintTop_toTopOf="@id/textview_current_time" />
 
     <TextView
         android:id="@+id/textview_total_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_24"
         android:layout_marginRight="@dimen/dp_8"
         android:text="@string/msg_00_00"
         android:textColor="#fff"
         android:textSize="@dimen/sp_14"
-        app:layout_constraintBottom_toTopOf="@id/button_play_toggle"
+        app:layout_constraintBottom_toBottomOf="@id/textview_current_time"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vp_music" />
+        app:layout_constraintTop_toTopOf="@id/textview_current_time" />
 
     <ImageButton
         android:id="@+id/button_favorite"
@@ -172,8 +168,9 @@
         android:id="@+id/button_play_toggle"
         android:layout_width="@dimen/dp_48"
         android:layout_height="@dimen/dp_48"
-        android:layout_marginBottom="@dimen/dp_24"
+        android:layout_marginBottom="@dimen/dp_32"
         android:layout_marginRight="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_32"
         android:background="@null"
         android:scaleType="fitXY"
         android:src="@drawable/ic_play_toogle"

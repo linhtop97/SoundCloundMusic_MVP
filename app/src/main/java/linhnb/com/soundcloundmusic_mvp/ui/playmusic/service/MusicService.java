@@ -369,12 +369,12 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
         if (isPlaying()) {
             iconPlayPause = R.drawable.ic_pause;
         } else {
-            iconPlayPause = R.drawable.ic_play;
+            iconPlayPause = R.drawable.ic_play_toogle;
         }
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.remote_view_music_player_small);
         remoteViews.setImageViewResource(R.id.img_button_close, R.drawable.ic_remote_view_close);
         remoteViews.setImageViewResource(R.id.img_button_play_toggle, iconPlayPause);
-        remoteViews.setImageViewResource(R.id.img_button_play_previous, R.drawable.ic_back);
+        remoteViews.setImageViewResource(R.id.img_button_play_previous, R.drawable.ic_play_previous);
         remoteViews.setImageViewResource(R.id.img_button_play_next, R.drawable.ic_play_next);
         //choox nay
         new FetchBitmapFromUrl(this).execute(track.getArtworkUrl());
@@ -386,10 +386,10 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
         remoteViews.setTextViewText(R.id.text_view_name, track.getTitle());
         remoteViews.setTextViewText(R.id.text_view_artist, track.getUserName());
 
-        remoteViews.setOnClickPendingIntent(R.id.button_close, pdismisIntent);
+        remoteViews.setOnClickPendingIntent(R.id.img_button_close, pdismisIntent);
         remoteViews.setOnClickPendingIntent(R.id.img_button_play_previous, ppreviousIntent);
         remoteViews.setOnClickPendingIntent(R.id.img_button_play_next, pnextIntent);
-        remoteViews.setOnClickPendingIntent(R.id.button_play_toggle, pplayIntent);
+        remoteViews.setOnClickPendingIntent(R.id.img_button_play_toggle, pplayIntent);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 getApplicationContext(), "abc");
         builder.setSmallIcon(R.mipmap.ic_launcher_round)

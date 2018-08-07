@@ -55,7 +55,7 @@ public class SplashFragment extends Fragment implements SplashContract.View {
         Fragment fragment = manager.findFragmentByTag(this.getClass().getSimpleName());
         if (fragment != null)
             manager.beginTransaction().remove(fragment).commit();
-        MainFragment mainFragment = MainFragment.newInstance();
+        MainFragment mainFragment = MainFragment.newInstance(false);
         FragmentManagerUtils.addFragment(manager, mainFragment, R.id.app_content,
                 mainFragment.getClass().getSimpleName(), false);
 

@@ -27,4 +27,8 @@ public class Constant {
     //extras
     public static final String EXTRA_POSITION = "EXTRA_POSITION";
     public static final String EXTRA_LIST_TRACK = "EXTRA_LIST_TRACK";
+
+    //argument
+    public static final String ARGUMENT_TRACKS_LIST = "ARGUMENT_TRACKS_LIST";
+    public static final String ARGUMENT_IS_OPEN = "ARGUMENT_IS_OPEN";
 }

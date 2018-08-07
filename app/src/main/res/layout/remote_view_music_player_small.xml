@@ -15,26 +15,19 @@
         android:scaleType="fitXY"
         android:src="@mipmap/ic_launcher" />
 
-    <FrameLayout
-        android:id="@+id/button_close"
+    <ImageButton
+        android:id="@+id/img_button_close"
         android:layout_width="@dimen/dp_24"
         android:layout_height="@dimen/dp_24"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dp_2"
-        android:layout_marginTop="@dimen/dp_2"
-        android:clickable="true">
-
-        <ImageButton
-            android:id="@+id/img_button_close"
-            android:layout_width="@dimen/dp_16"
-            android:layout_height="@dimen/dp_16"
-            android:layout_gravity="center"
-            android:background="@null"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_remote_view_close" />
-    </FrameLayout>
-
+        android:layout_gravity="center"
+        android:layout_marginRight="@dimen/dp_4"
+        android:layout_marginTop="@dimen/dp_4"
+        android:background="@null"
+        android:padding="@dimen/dp_4"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_remote_view_close" />
 
     <TextView
         android:id="@+id/text_view_name"
@@ -43,11 +36,11 @@
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/dp_2"
         android:layout_marginLeft="@dimen/dp_8"
-        android:layout_marginTop="@dimen/dp_2"
+        android:layout_marginTop="@dimen/dp_4"
         android:layout_toEndOf="@+id/image_view_album"
-        android:layout_toLeftOf="@+id/button_close"
+        android:layout_toLeftOf="@+id/img_button_close"
         android:layout_toRightOf="@+id/image_view_album"
-        android:layout_toStartOf="@+id/button_close"
+        android:layout_toStartOf="@+id/img_button_close"
         android:singleLine="true"
         android:textColor="@android:color/white"
         android:textSize="@dimen/sp_14"
@@ -69,12 +62,11 @@
         android:id="@+id/layout_play_controls"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_24"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/text_view_artist"
         android:layout_marginBottom="@dimen/dp_8"
-        android:layout_marginTop="@dimen/dp_4"
+        android:layout_marginTop="@dimen/dp_12"
         android:layout_toEndOf="@+id/image_view_album"
         android:layout_toRightOf="@+id/image_view_album">
-
 
         <ImageButton
             android:id="@+id/img_button_play_toggle"
