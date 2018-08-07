@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_root"
+    android:layout_width="match_parent"
+    android:layout_height="86dp"
+    android:background="@drawable/background">
+
+    <ImageView
+        android:id="@+id/image_view_album"
+        android:layout_width="@dimen/dp_64"
+        android:layout_height="@dimen/dp_64"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_launcher" />
+
+    <FrameLayout
+        android:id="@+id/button_close"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_2"
+        android:layout_marginTop="@dimen/dp_2"
+        android:clickable="true">
+
+        <ImageButton
+            android:id="@+id/img_button_close"
+            android:layout_width="@dimen/dp_16"
+            android:layout_height="@dimen/dp_16"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_remote_view_close" />
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/text_view_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/dp_2"
+        android:layout_marginLeft="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_2"
+        android:layout_toEndOf="@+id/image_view_album"
+        android:layout_toLeftOf="@+id/button_close"
+        android:layout_toRightOf="@+id/image_view_album"
+        android:layout_toStartOf="@+id/button_close"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_14"
+        tools:text="Saycet" />
+
+    <TextView
+        android:id="@+id/text_view_artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/text_view_name"
+        android:layout_alignStart="@+id/text_view_name"
+        android:layout_below="@id/text_view_name"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_12"
+        tools:text="Through the window" />
+
+    <RelativeLayout
+        android:id="@+id/layout_play_controls"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_24"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_4"
+        android:layout_toEndOf="@+id/image_view_album"
+        android:layout_toRightOf="@+id/image_view_album">
+
+
+        <ImageButton
+            android:id="@+id/img_button_play_toggle"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp_32"
+            android:layout_marginRight="@dimen/dp_32"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_play_toogle" />
+
+        <ImageButton
+            android:id="@+id/img_button_play_previous"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:layout_gravity="center"
+            android:layout_toLeftOf="@id/img_button_play_toggle"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_play_previous" />
+
+        <ImageButton
+            android:id="@+id/img_button_play_next"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@id/img_button_play_toggle"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_play_next" />
+    </RelativeLayout>
+</RelativeLayout>

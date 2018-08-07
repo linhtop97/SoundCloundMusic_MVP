@@ -23,4 +23,8 @@ public class Constant {
     public static final String INTERNET_NOT_AVAIABLE = "internet not avaiable";
     public static final String FILE_EXTENTION = ".mp3";
     public static final String ARGUMENT_TIME_DELAY = "ARGUMENT_PLAY_ANIM";
+
+    //extras
+    public static final String EXTRA_POSITION = "EXTRA_POSITION";
+    public static final String EXTRA_LIST_TRACK = "EXTRA_LIST_TRACK";
 }
