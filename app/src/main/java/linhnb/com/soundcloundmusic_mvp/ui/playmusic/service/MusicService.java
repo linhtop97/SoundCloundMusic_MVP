@@ -124,6 +124,7 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
     @Override
     public void onDestroy() {
         releasePlayer();
+        stopSelf();
         super.onDestroy();
     }
 
