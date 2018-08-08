@@ -169,7 +169,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Adapter
                     mTrackAdapter.notifyDataSetChanged();
                     mTrackAdapter.setLoaded();
                 }
-            }, 1000);
+            }, 1500);
         }
     }
 
