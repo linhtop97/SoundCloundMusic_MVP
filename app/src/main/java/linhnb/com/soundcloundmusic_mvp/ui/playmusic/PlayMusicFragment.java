@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,7 +23,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.Injection;
@@ -38,7 +36,6 @@ import linhnb.com.soundcloundmusic_mvp.ui.playmusic.playanim.PlayAnimationFragme
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.IPlay;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.MusicService;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.PlayMode;
-import linhnb.com.soundcloundmusic_mvp.utils.Constant;
 import linhnb.com.soundcloundmusic_mvp.utils.StringUtil;
 
 public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener, IPlay.Callback, PlayMusicContract.View, TrackDownloadManager.DownloadListener {
@@ -107,12 +104,14 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
         }
     };
 
-    public static PlayMusicFragment newInstance(List<Track> tracks) {
-        PlayMusicFragment playMusicFragment = new PlayMusicFragment();
-        Bundle args = new Bundle();
-        args.putParcelableArrayList(Constant.ARGUMENT_TRACKS_LIST, (ArrayList<? extends Parcelable>) tracks);
-        playMusicFragment.setArguments(args);
-        return playMusicFragment;
+    public static PlayMusicFragment newInstance() {
+        return new PlayMusicFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(false);
     }
 
     @Nullable
@@ -124,7 +123,7 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
     }
 
     private void initView() {
-        mTracks = getArguments().getParcelableArrayList(Constant.ARGUMENT_TRACKS_LIST);
+        mTracks = PreferenceManager.getListTrack(mMainActivity);
         mCurrentPosition = PreferenceManager.getLastPosition(getActivity());
         mTextTrackTitle = mViewRoot.findViewById(R.id.text_track_title);
         mTextArtist = mViewRoot.findViewById(R.id.text_artist);
@@ -284,10 +283,12 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
                 break;
             case R.id.button_next:
                 if (mPlayer == null) return;
+                mImageButtonPlayToggle.setImageResource(R.drawable.ic_play_toogle);
                 mPlayer.playNext();
                 break;
             case R.id.button_previous:
                 if (mPlayer == null) return;
+                mImageButtonPlayToggle.setImageResource(R.drawable.ic_play_toogle);
                 mPlayer.playPrevious();
                 break;
             case R.id.button_download:
@@ -327,7 +328,6 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
         if (mPlayer != null && mPlayer.isPlaying()) {
             mHandler.removeCallbacks(mProgressCallback);
             mHandler.post(mProgressCallback);
-            startAnimation(true);
         }
     }
 
@@ -411,14 +411,12 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
 
     @Override
     public void onPlayStatusChanged(boolean isPlaying) {
+        onTrackUpdated(mPlayer.getPlayingTrack());
         updatePlayToggle(isPlaying);
-        startAnimation(isPlaying);
         if (isPlaying) {
-            // imageViewAlbum.resumeRotateAnimation();
             mHandler.removeCallbacks(mProgressCallback);
             mHandler.post(mProgressCallback);
         } else {
-            //imageViewAlbum.pauseRotateAnimation();
             mHandler.removeCallbacks(mProgressCallback);
         }
     }
@@ -477,26 +475,17 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
         if (mPlayer.isPlaying()) {
             mHandler.post(mProgressCallback);
             mImageButtonPlayToggle.setImageResource(R.drawable.ic_pause);
+            if (fragment != null && PageType.PLAY == mViewPager.getCurrentItem()) {
+                PlayAnimationFragment playAnimationFragment = (PlayAnimationFragment) fragment;
+                playAnimationFragment.setImage();
+                playAnimationFragment.startAnimation();
+            }
         }
     }
 
     @Override
     public void setPresenter(PlayMusicContract.Presenter presenter) {
         mPresenter = presenter;
-    }
-
-    public void startAnimation(boolean isPlaying) {
-        if (this.isAdded()) {
-            Fragment fragment = getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.vp_music + ":" + mViewPager.getCurrentItem());
-            if (fragment != null && PageType.PLAY == mViewPager.getCurrentItem()) {
-                PlayAnimationFragment playAnimationFragment = (PlayAnimationFragment) fragment;
-                if (isPlaying) {
-                    playAnimationFragment.startAnimation();
-                } else {
-                    playAnimationFragment.cancelAnimation();
-                }
-            }
-        }
     }
 
     @Override

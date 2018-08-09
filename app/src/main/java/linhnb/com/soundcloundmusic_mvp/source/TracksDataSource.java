@@ -23,7 +23,7 @@ public interface TracksDataSource {
 
         void addTrackToPlayList(Track track);
 
-        void getTracks();
+        List<Track> getTracks();
 
     }
 

@@ -144,13 +144,13 @@ public class HomeFragment extends Fragment implements HomeContract.View, Adapter
 
     @Override
     public void onItemClick(int position) {
-        if (getActivity() instanceof IPlayTrack) {
-            ((IPlayTrack) getActivity()).playTrack(position);
-        }
     }
 
     @Override
     public void onItemClick(List list, int position) {
+        if (getActivity() instanceof IPlayTrack) {
+            ((IPlayTrack) getActivity()).playTrack(list, position);
+        }
     }
 
     @Override
@@ -169,11 +169,13 @@ public class HomeFragment extends Fragment implements HomeContract.View, Adapter
                     mTrackAdapter.notifyDataSetChanged();
                     mTrackAdapter.setLoaded();
                 }
-            }, 1500);
+            }, 1000);
         }
     }
 
     public interface IPlayTrack {
         void playTrack(int position);
+
+        void playTrack(List<Track> tracks, int position);
     }
 }

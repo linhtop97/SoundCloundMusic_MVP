@@ -33,7 +33,7 @@
 
 
     <TextView
-        android:id="@+id/text_view_name"
+        android:id="@+id/text_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -54,9 +54,9 @@
         android:id="@+id/text_view_artist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/text_view_name"
-        android:layout_alignStart="@+id/text_view_name"
-        android:layout_below="@id/text_view_name"
+        android:layout_alignLeft="@+id/text_title"
+        android:layout_alignStart="@+id/text_title"
+        android:layout_below="@id/text_title"
         android:layout_marginBottom="8dp"
         android:singleLine="true"
         android:textColor="@android:color/white"

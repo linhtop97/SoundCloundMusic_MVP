@@ -2,6 +2,8 @@ package linhnb.com.soundcloundmusic_mvp.source.local;
 
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
 import linhnb.com.soundcloundmusic_mvp.source.TracksDataSource;
 
@@ -33,8 +35,8 @@ public class TracksLocalDataSource implements TracksDataSource.LocalDataSource {
     }
 
     @Override
-    public void getTracks() {
-
+    public List<Track> getTracks() {
+        return new FetchTracksFromDevice().getTracksLocal();
     }
 
     @Override

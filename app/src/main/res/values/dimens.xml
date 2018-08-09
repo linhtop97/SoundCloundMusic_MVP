@@ -26,4 +26,9 @@
     <dimen name="dp_12">12dp</dimen>
     <dimen name="dp_246">256dp</dimen>
     <dimen name="sp_12">12sp</dimen>
+    <dimen name="dp_54">54dp</dimen>
+    <dimen name="dp_72">72dp</dimen>
+
+    <dimen name="sc.text.list.title">14sp</dimen>
+    <dimen name="sc.text.list.hint">12sp</dimen>
 </resources>

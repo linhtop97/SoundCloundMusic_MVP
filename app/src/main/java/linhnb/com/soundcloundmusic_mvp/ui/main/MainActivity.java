@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         if (action != null && action.equals(Constant.ACTION_MAIN)) {
             FragmentManager manager = getSupportFragmentManager();
             MainFragment fragment = MainFragment.newInstance(true);
-            FragmentManagerUtils.addFragment(manager, fragment, R.id.main_content,
+            FragmentManagerUtils.addFragment(manager, fragment, R.id.app_content,
                     fragment.getClass().getName(), false);
         } else {
             mPresenter.startPlashScreen();
@@ -97,7 +97,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         PreferenceManager.setLastPosition(this, position);
         List<Track> tracks = PreferenceManager.getListTrack(this);
         PreferenceManager.setImageUrl(this, tracks.get(position).getArtworkUrl());
-        PlayMusicFragment playMusicFragment = PlayMusicFragment.newInstance(tracks);
+        PlayMusicFragment playMusicFragment = PlayMusicFragment.newInstance();
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentManagerUtils.addFragment(manager, playMusicFragment,
+                R.id.main_content, playMusicFragment.getClass().getName(), true);
+    }
+
+    @Override
+    public void playTrack(List<Track> tracks, int position) {
+        PreferenceManager.setLastPosition(this, position);
+        PreferenceManager.putListTrack(this, tracks);
+        PreferenceManager.setImageUrl(this, tracks.get(position).getArtworkUrl());
+        PlayMusicFragment playMusicFragment = PlayMusicFragment.newInstance();
         FragmentManager manager = getSupportFragmentManager();
         FragmentManagerUtils.addFragment(manager, playMusicFragment,
                 R.id.main_content, playMusicFragment.getClass().getName(), true);
@@ -114,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         String action = intent.getAction();
         if (action != null && action.equals(Constant.ACTION_MAIN)) {
             FragmentManager manager = getSupportFragmentManager();
-            PlayMusicFragment musicFragment = PlayMusicFragment.newInstance(null);
+            PlayMusicFragment musicFragment = PlayMusicFragment.newInstance();
             FragmentManagerUtils.addFragment(manager, musicFragment, R.id.main_content,
                     musicFragment.getClass().getName(), true);
         }

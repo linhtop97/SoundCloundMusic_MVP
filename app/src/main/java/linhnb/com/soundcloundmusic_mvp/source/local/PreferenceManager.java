@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
+import linhnb.com.soundcloundmusic_mvp.ui.maincontent.TabType;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.PlayMode;
 
 public class PreferenceManager {
@@ -24,6 +25,7 @@ public class PreferenceManager {
     private static final String KEY_LIST_TRACK = "tracks";
     private static final String KEY_IMAGE_URL = "imageUrl";
     private static final String KEY_IS_PLAYING = "isPlaying";
+    private static final String KEY_TAB = "tab";
 
     private static SharedPreferences preferences(Context context) {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -49,6 +51,14 @@ public class PreferenceManager {
         return preferences(context).getString(KEY_IMAGE_URL, null);
     }
 
+    public static void setTab(Context context, int tab) {
+        edit(context).putInt(KEY_TAB, tab).commit();
+    }
+
+    public static int getTab(Context context) {
+        return preferences(context).getInt(KEY_TAB, TabType.HOME);
+    }
+
     public static void setImageUrl(Context context, String url) {
         edit(context).putString(KEY_IMAGE_URL, url).commit();
     }
@@ -67,10 +77,6 @@ public class PreferenceManager {
 
     public static void setIsPlaying(Context context, boolean isPlaying) {
         edit(context).putBoolean(KEY_IS_PLAYING, isPlaying).commit();
-    }
-
-    public static void putListTrack(Context context, String tracks) {
-        edit(context).putString(KEY_LIST_TRACK, tracks).commit();
     }
 
     public static List<Track> getListTrack(Context context) {
