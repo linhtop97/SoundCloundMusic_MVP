@@ -19,6 +19,8 @@
     <string name="msg_cant_download">Can\'t download</string>
     <string name="msg_downloading">Dowloading…</string>
     <string name="lyrics">Lyrics</string>
+    <string name="txt_number_1">1</string>
+    <string name="sample">04:52 | Linh</string>
     q
     <string-array name="music_genres">
         <item>Pop</item>

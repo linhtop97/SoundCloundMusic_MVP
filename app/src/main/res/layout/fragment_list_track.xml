@@ -2,7 +2,7 @@
 <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rv_list_track"
     android:layout_width="match_parent"
-    android:paddingLeft="@dimen/dp_8"
+    android:layout_height="wrap_content"
     android:background="@color/sc.theme.background_list"
-    android:paddingRight="@dimen/dp_8"
-    android:layout_height="wrap_content" />
+    android:paddingLeft="@dimen/dp_8"
+    android:paddingRight="@dimen/dp_8" />

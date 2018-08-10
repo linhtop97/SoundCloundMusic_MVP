@@ -11,13 +11,13 @@ public interface IPlay {
 
     void setPlayList(List<Track> tracks);
 
-    boolean play();
+    void play();
 
-    boolean play(List<Track> tracks);
+    void play(List<Track> tracks);
 
-    boolean play(List<Track> tracks, int startIndex);
+    void play(List<Track> tracks, int startIndex);
 
-    boolean play(Track track);
+    void play(Track track);
 
     void play(int position);
 

@@ -24,20 +24,15 @@ public class ListTrackFragment extends Fragment implements OnItemClickListener {
 
     private TrackAdapterMini mTrackAdapter;
     private RecyclerView mRecyclerView;
-
-    public LinearLayoutManager getLayoutManager() {
-        return mLayoutManager;
-    }
-
-    public void setLayoutManager(LinearLayoutManager layoutManager) {
-        mLayoutManager = layoutManager;
-    }
-
     private LinearLayoutManager mLayoutManager;
 
     public static ListTrackFragment newInstance() {
         ListTrackFragment fragment = new ListTrackFragment();
         return fragment;
+    }
+
+    public LinearLayoutManager getLayoutManager() {
+        return mLayoutManager;
     }
 
     @Nullable

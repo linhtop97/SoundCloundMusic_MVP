@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +18,10 @@ import com.bumptech.glide.request.target.Target;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import linhnb.com.soundcloundmusic_mvp.R;
-import linhnb.com.soundcloundmusic_mvp.data.model.Track;
 import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
 import linhnb.com.soundcloundmusic_mvp.ui.main.MainActivity;
+import linhnb.com.soundcloundmusic_mvp.ui.maincontent.TabType;
+import linhnb.com.soundcloundmusic_mvp.utils.ImageUtil;
 
 public class PlayAnimationFragment extends Fragment implements PlayAnimContract.View {
 
@@ -29,7 +29,6 @@ public class PlayAnimationFragment extends Fragment implements PlayAnimContract.
     private CircleImageView mImageView;
     private PlayAnimContract.Presenter mPresenter;
     private MainActivity mMainActivity;
-    private Track mTrack;
 
     public static PlayAnimationFragment newInstance() {
         PlayAnimationFragment playAnimationFragment = new PlayAnimationFragment();
@@ -45,6 +44,7 @@ public class PlayAnimationFragment extends Fragment implements PlayAnimContract.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setImage();
     }
 
     @Nullable
@@ -61,9 +61,9 @@ public class PlayAnimationFragment extends Fragment implements PlayAnimContract.
         super.onViewCreated(view, savedInstanceState);
         new PlayAnimPresenter(this);
         setImage();
-        if (PreferenceManager.getIsPlaying(getActivity())) {
-            mImageView.startAnimation(mAnimation);
-        }
+//        if (PreferenceManager.getIsPlaying(getActivity())) {
+//            mImageView.startAnimation(mAnimation);
+//        }
     }
 
     @Override
@@ -92,24 +92,35 @@ public class PlayAnimationFragment extends Fragment implements PlayAnimContract.
 
     @Override
     public void setImage() {
-        Glide.with(getContext())
-                .load(PreferenceManager.getImageUrl(getActivity()))
-                .asBitmap()
-                .placeholder(R.drawable.ic_app_large)
-                .error(R.drawable.ic_app_large)
-                .listener(new RequestListener<String, Bitmap>() {
-                    @Override
-                    public boolean onException(Exception e, String s, Target<Bitmap> target, boolean b) {
-                        return false;
-                    }
+        mImageView.setImageDrawable(mMainActivity.getResources().getDrawable(R.drawable.ic_app_large));
+        if (PreferenceManager.getTab(mMainActivity) == TabType.LOCAL_MUSIC) {
+            Bitmap bm = ImageUtil.parseAlbum(PreferenceManager.getListTrack(mMainActivity)
+                    .get(PreferenceManager.getLastPosition(mMainActivity)));
+            if (bm != null) {
+                mImageView.setImageBitmap(bm);
+            }
+        } else {
+            Glide.with(getContext())
+                    .load(PreferenceManager.getImageUrl(getActivity()))
+                    .asBitmap()
+                    .placeholder(R.drawable.ic_app_large)
+                    .error(R.drawable.ic_app_large)
+                    .listener(new RequestListener<String, Bitmap>() {
+                        @Override
+                        public boolean onException(Exception e, String s, Target<Bitmap> target, boolean b) {
+                           // mImageView.setImageDrawable(mMainActivity.getResources().getDrawable(R.drawable.ic_app_large));
+                            return false;
+                        }
 
-                    @Override
-                    public boolean onResourceReady(Bitmap bitmap, String s, Target<Bitmap> target, boolean b, boolean b1) {
-                        mImageView.setImageBitmap(bitmap);
-                        return false;
-                    }
-                })
-                .preload();
+                        @Override
+                        public boolean onResourceReady(Bitmap bitmap, String s, Target<Bitmap> target, boolean b, boolean b1) {
+                            mImageView.setImageBitmap(bitmap);
+                            return false;
+                        }
+                    })
+                    .preload();
+        }
+
     }
 
     @Override
@@ -120,17 +131,5 @@ public class PlayAnimationFragment extends Fragment implements PlayAnimContract.
     @Override
     public void cancelAnimation() {
         mImageView.clearAnimation();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("restart", "rt");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d("detack", "detack");
     }
 }
