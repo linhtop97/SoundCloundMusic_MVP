@@ -39,4 +39,5 @@ public class Constant {
     public static final String ACTION_PLAY_PREVIOUS = "linhnb.com.soundcloundmusic_mvp.ACTION_PLAY_PREVIOUS";
     public static final String ACTION_PLAY_NEXT = "linhnb.com.soundcloundmusic_mvp.ACTION.PLAY_NEXT";
     public static final String ACTION_STOP_SERVICE = "linhnb.com.soundcloundmusic_mvp.ACTION.STOP_SERVICE";
+    public static final int REQUEST_PERMISSTION = 1;
 }

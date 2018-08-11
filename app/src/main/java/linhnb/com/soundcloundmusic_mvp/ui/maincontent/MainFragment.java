@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import linhnb.com.soundcloundmusic_mvp.R;
+import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
 import linhnb.com.soundcloundmusic_mvp.ui.main.MainActivity;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.PlayMusicFragment;
 import linhnb.com.soundcloundmusic_mvp.utils.Constant;
@@ -27,7 +28,7 @@ public class MainFragment extends Fragment implements TabLayout.OnTabSelectedLis
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private MainActivity mMainActivity;
-
+    private int mCurrentTab;
 
     public static MainFragment newInstance(Boolean isOpenPlayFragment) {
         MainFragment fragment = new MainFragment();
@@ -53,18 +54,6 @@ public class MainFragment extends Fragment implements TabLayout.OnTabSelectedLis
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Boolean isOpen = getArguments().getBoolean(Constant.ARGUMENT_IS_OPEN);
-        if (isOpen) {
-            FragmentManager manager = mMainActivity.getSupportFragmentManager();
-            PlayMusicFragment musicFragment = PlayMusicFragment.newInstance(null);
-            FragmentManagerUtils.addFragment(manager, musicFragment, R.id.main_content,
-                    musicFragment.getClass().getName(), true);
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onresum");
@@ -72,15 +61,10 @@ public class MainFragment extends Fragment implements TabLayout.OnTabSelectedLis
         Log.d(TAG, action);
         if (action != null && action.equals(Constant.ACTION_MAIN)) {
             FragmentManager manager = mMainActivity.getSupportFragmentManager();
-            PlayMusicFragment musicFragment = PlayMusicFragment.newInstance(null);
+            PlayMusicFragment musicFragment = PlayMusicFragment.newInstance();
             FragmentManagerUtils.addFragment(manager, musicFragment, R.id.main_content,
                     musicFragment.getClass().getName(), true);
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     private void initView(View view) {
@@ -88,14 +72,28 @@ public class MainFragment extends Fragment implements TabLayout.OnTabSelectedLis
         mTabLayout = view.findViewById(R.id.tablayout);
         MainPagerAdapter adapter = new MainPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(adapter);
+        mViewPager.setCurrentItem(mCurrentTab);
         mTabLayout.addOnTabSelectedListener(this);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
     private void setupTabIcons() {
-        mTabLayout.getTabAt(TabType.HOME).setIcon(R.drawable.ic_home_selected);
-        mTabLayout.getTabAt(TabType.LOCAL_MUSIC).setIcon(R.drawable.ic_local_music_unselected);
-        mTabLayout.getTabAt(TabType.PLAYLIST).setIcon(R.drawable.ic_playlist_unselected);
+        switch (mCurrentTab) {
+            case TabType.HOME:
+                mTabLayout.getTabAt(TabType.HOME).setIcon(R.drawable.ic_home_selected);
+                mTabLayout.getTabAt(TabType.LOCAL_MUSIC).setIcon(R.drawable.ic_local_music_unselected);
+                mTabLayout.getTabAt(TabType.PLAYLIST).setIcon(R.drawable.ic_playlist_unselected);
+                break;
+            case TabType.LOCAL_MUSIC:
+                mTabLayout.getTabAt(TabType.HOME).setIcon(R.drawable.ic_home_unselected);
+                mTabLayout.getTabAt(TabType.LOCAL_MUSIC).setIcon(R.drawable.ic_local_music_selected);
+                mTabLayout.getTabAt(TabType.PLAYLIST).setIcon(R.drawable.ic_playlist_unselected);
+                break;
+            case TabType.PLAYLIST:
+                mTabLayout.getTabAt(TabType.HOME).setIcon(R.drawable.ic_home_unselected);
+                mTabLayout.getTabAt(TabType.LOCAL_MUSIC).setIcon(R.drawable.ic_local_music_unselected);
+                mTabLayout.getTabAt(TabType.PLAYLIST).setIcon(R.drawable.ic_playlist_selected);
+        }
     }
 
 
@@ -103,20 +101,31 @@ public class MainFragment extends Fragment implements TabLayout.OnTabSelectedLis
     public void onAttach(Context context) {
         super.onAttach(context);
         mMainActivity = (MainActivity) context;
+        mCurrentTab = PreferenceManager.getTab(mMainActivity);
+        Boolean isOpen = getArguments().getBoolean(Constant.ARGUMENT_IS_OPEN);
+        if (isOpen) {
+            FragmentManager manager = mMainActivity.getSupportFragmentManager();
+            PlayMusicFragment musicFragment = PlayMusicFragment.newInstance();
+            FragmentManagerUtils.addFragment(manager, musicFragment, R.id.main_content,
+                    musicFragment.getClass().getName(), true);
+        }
     }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         switch (tab.getPosition()) {
             case TabType.HOME:
+                mMainActivity.setTitle(mMainActivity.getResources().getString(R.string.title_home));
                 mTabLayout.getTabAt(TabType.HOME).setIcon(R.drawable.ic_home_selected);
                 mViewPager.setCurrentItem(0);
                 break;
             case TabType.LOCAL_MUSIC:
+                mMainActivity.setTitle(mMainActivity.getResources().getString(R.string.title_local_music));
                 mTabLayout.getTabAt(TabType.LOCAL_MUSIC).setIcon(R.drawable.ic_local_music_selected);
                 mViewPager.setCurrentItem(1);
                 break;
             case TabType.PLAYLIST:
+                mMainActivity.setTitle(mMainActivity.getResources().getString(R.string.title_playlist));
                 mTabLayout.getTabAt(TabType.PLAYLIST).setIcon(R.drawable.ic_playlist_selected);
                 mViewPager.setCurrentItem(2);
                 break;
@@ -133,5 +142,4 @@ public class MainFragment extends Fragment implements TabLayout.OnTabSelectedLis
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
     }
-
 }

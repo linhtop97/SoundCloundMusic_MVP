@@ -63,9 +63,6 @@ public class PlayMusicPresenter implements PlayMusicContract.Presenter {
     public void bindMusicService() {
         Intent intent = new Intent(mContext, MusicService.class);
         intent.setAction(Constant.ACTION_MAIN);
-        intent.putParcelableArrayListExtra(Constant.EXTRA_LIST_TRACK,
-                (ArrayList<? extends Parcelable>) mTracks);
-        intent.putExtra(Constant.EXTRA_POSITION, mPosition);
         mContext.bindService(intent, mConnection, BIND_AUTO_CREATE);
         mContext.startService(intent);
         mIsServiceBound = true;

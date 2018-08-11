@@ -10,7 +10,10 @@
 
     <color name="sc.theme.background_list">#3364ccc0</color>
 
+    <color name="selector_list_title_text">#CD64ccc0</color>
+    <color name="selector_list_hint_text">#8064ccc0</color>
     <color name="sc.theme.textColorPrimary">#223331</color>
+    <color name="sc.theme.textColorHint">#8064ccc0</color>
     <color name="sc.theme.textColorSecondary">#223331</color>
     <color name="sc.theme.colorControlActivated">#7AFFFFFF</color>
     <color name="sc.theme.colorControlHighlight">#7AFFFFFF</color>

@@ -3,6 +3,8 @@ package linhnb.com.soundcloundmusic_mvp.source;
 
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
 import linhnb.com.soundcloundmusic_mvp.source.local.TracksLocalDataSource;
 import linhnb.com.soundcloundmusic_mvp.source.remote.TracksRemoteDataSource;
@@ -47,8 +49,8 @@ public class TracksRepository implements TracksDataSource.RemoteDataSource, Trac
     }
 
     @Override
-    public void getTracks() {
-
+    public List<Track> getTracks() {
+        return mTracksLocalDataSource.getTracks();
     }
 
     @Override

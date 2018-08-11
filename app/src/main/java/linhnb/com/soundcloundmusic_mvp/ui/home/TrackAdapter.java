@@ -20,10 +20,12 @@ import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.R;
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
+import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
 import linhnb.com.soundcloundmusic_mvp.source.remote.TrackDownloadManager;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.IAdapterView;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.ListAdapter;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.OnLoadMoreListener;
+import linhnb.com.soundcloundmusic_mvp.ui.maincontent.TabType;
 import linhnb.com.soundcloundmusic_mvp.utils.StringUtil;
 
 public class TrackAdapter extends ListAdapter<Track> implements TrackDownloadManager.DownloadListener {
@@ -136,7 +138,8 @@ public class TrackAdapter extends ListAdapter<Track> implements TrackDownloadMan
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mItemClickListener.onItemClick(getAdapterPosition());
+                    PreferenceManager.setTab(mContext, TabType.HOME);
+                    mItemClickListener.onItemClick(mData, getAdapterPosition());
                 }
             });
         }
