@@ -21,6 +21,7 @@ import linhnb.com.soundcloundmusic_mvp.ui.maincontent.TabType;
 import linhnb.com.soundcloundmusic_mvp.utils.StringUtil;
 
 public class TrackAdapter extends ListAdapter<Track> {
+
     public TrackAdapter(Context context, List<Track> tracks) {
         super(context, tracks);
         mData = new ArrayList<>();

@@ -51,6 +51,14 @@ public class PreferenceManager {
         return preferences(context).getString(KEY_IMAGE_URL, null);
     }
 
+    public static void setTab(Context context, int tab) {
+        edit(context).putInt(KEY_TAB, tab).commit();
+    }
+
+    public static int getTab(Context context) {
+        return preferences(context).getInt(KEY_TAB, TabType.HOME);
+    }
+
     public static void setImageUrl(Context context, String url) {
         edit(context).putString(KEY_IMAGE_URL, url).commit();
     }

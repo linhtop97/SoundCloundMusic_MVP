@@ -10,6 +10,7 @@ import java.io.File;
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
 
 public class ImageUtil {
+
     private static final String TAG = "ImageUtil";
 
     public static Bitmap parseAlbum(Track track) {

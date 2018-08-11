@@ -277,10 +277,12 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
                 break;
             case R.id.button_next:
                 if (mPlayer == null) return;
+                mImageButtonPlayToggle.setImageResource(R.drawable.ic_play_toogle);
                 mPlayer.playNext();
                 break;
             case R.id.button_previous:
                 if (mPlayer == null) return;
+                mImageButtonPlayToggle.setImageResource(R.drawable.ic_play_toogle);
                 mPlayer.playPrevious();
                 break;
             case R.id.button_download:
@@ -456,6 +458,11 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
             }
             mHandler.post(mProgressCallback);
             mImageButtonPlayToggle.setImageResource(R.drawable.ic_pause);
+            if (fragment != null && PageType.PLAY == mViewPager.getCurrentItem()) {
+                PlayAnimationFragment playAnimationFragment = (PlayAnimationFragment) fragment;
+                playAnimationFragment.setImage();
+                playAnimationFragment.startAnimation();
+            }
         }
     }
 

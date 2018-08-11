@@ -2,6 +2,7 @@ package linhnb.com.soundcloundmusic_mvp.ui.local;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,7 +37,6 @@ public class LocalMusicFragment extends Fragment implements LocalMusicContract.V
     private LinearLayoutManager mLayoutManager;
     private LocalMusicContract.Presenter mPresenter;
     private MainActivity mMainActivity;
-
     public static LocalMusicFragment newInstance() {
         return new LocalMusicFragment();
     }
@@ -115,4 +115,3 @@ public class LocalMusicFragment extends Fragment implements LocalMusicContract.V
                 break;
         }
     }
-}

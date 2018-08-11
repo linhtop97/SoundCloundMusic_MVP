@@ -32,7 +32,6 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
     //khởi tạo vị trí bài hát mặc định
     public static final int NO_POSITION = -1;
     private static final int NOTIFICATION_ID = 1;
-
     private RemoteViews mContentViewBig, mContentViewSmall;
     private Bitmap mBitmap;
     private MediaPlayer mMediaPlayer;
@@ -71,7 +70,6 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
                             && checkTrackPlay(mTracks.get(position))) {
                         play();
                     } else {
-                        setPlayList(tracks);
                         play(tracks, position);
                         break;
                     }
@@ -304,6 +302,87 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
     }
 
     @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+        Track next = null;
+        if (getPlayMode() == PlayMode.LIST && getPlayingIndex() == mTracks.size() - 1) {
+            // In the end of the list
+            // Do nothing, just deliver the callback
+        } else if (getPlayMode() == PlayMode.SINGLE) {
+            next = getCurrentTrack();
+            play();
+        } else {
+            boolean hasNext = hasNext(true);
+            if (hasNext) {
+                next = next();
+                play();
+            }
+        }
+        notifyComplete(next);
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mediaPlayer) {
+        mMediaPlayer.start();
+        notifyPlayStatusChanged(true);
+        showNotification();
+    }
+
+    public boolean hasPrevious() {
+        return mTracks != null && mTracks.size() != 0;
+    }
+
+    public boolean hasNext(boolean fromComplete) {
+        if (mTracks.isEmpty()) return false;
+        if (fromComplete) {
+            if (mPlayMode == PlayMode.LIST && mPlayingindex + 1 >= mTracks.size()) return false;
+        }
+        return true;
+    }
+
+    public Track next() {
+        switch (mPlayMode) {
+            case LOOP:
+            case LIST:
+            case SINGLE:
+                int newIndex = mPlayingindex + 1;
+                if (newIndex >= mTracks.size()) {
+                    newIndex = 0;
+                }
+                mPlayingindex = newIndex;
+                break;
+            case SHUFFLE:
+                mPlayingindex = randomPlayIndex();
+                break;
+        }
+        return mTracks.get(mPlayingindex);
+    }
+
+    private int randomPlayIndex() {
+        int randomIndex = new Random().nextInt(mTracks.size());
+        if (mTracks.size() > 1 && randomIndex == mPlayingindex) {
+            randomPlayIndex();
+        }
+        return randomIndex;
+    }
+
+    public PlayMode getPlayMode() {
+        return mPlayMode;
+    }
+
+    @Override
+    public void setPlayMode(PlayMode playMode) {
+        mPlayMode = playMode;
+    }
+
+    public int getPlayingIndex() {
+        return mPlayingindex;
+    }
+
+    public void setPlayingindex(int playingindex) {
+        this.mPlayingindex = playingindex;
+    }
+
+    @Override
     public void onSwitchPrevious(@Nullable Track previous) {
         showNotification();
     }
@@ -325,18 +404,12 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
 
     }
 
-    /**
-     * Show a notification while this service is running.
-     */
     private void showNotification() {
         Intent notIntent = new Intent(this, MainActivity.class);
         notIntent.setAction(Constant.ACTION_MAIN);
         PreferenceManager.setIsPlaying(this, isPlaying());
         notIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notIntent, 0);
-
-        // Set the info for the views that show in the notification panel.
         Notification notification = new NotificationCompat.Builder(this, "abc")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)  // the status icon
                 .setWhen(System.currentTimeMillis())  // the time stamp
@@ -346,7 +419,6 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setOngoing(true)
                 .build();
-        // Send the notification.
         startForeground(NOTIFICATION_ID, notification);
     }
 
@@ -408,7 +480,7 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
             remoteView.setTextViewText(R.id.text_title, currentTrack.getTitle());
             remoteView.setTextViewText(R.id.text_view_artist, currentTrack.getUserName());
         }
-        remoteView.setImageViewResource(R.id.image_view_play_toggle, isPlaying()
+        remoteView.setImageViewResource(R.id.image_view_play_toggle, mMediaPlayer.isPlaying()
                 ? R.drawable.ic_pause : R.drawable.ic_play_toogle);
         remoteView.setImageViewResource(R.id.image_view_album, R.drawable.ic_app_large);
         if (PreferenceManager.getTab(this) == TabType.LOCAL_MUSIC) {
@@ -427,7 +499,7 @@ public class MusicService extends Service implements IPlay, IPlay.Callback,
     public void setBitmap(Bitmap bm) {
         mBitmap = bm;
     }
-
+          
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         Track next = null;

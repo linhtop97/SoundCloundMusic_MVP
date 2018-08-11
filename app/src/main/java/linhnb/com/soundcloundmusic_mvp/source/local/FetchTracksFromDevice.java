@@ -47,7 +47,6 @@ public class FetchTracksFromDevice {
                 tracks.add(track);
             } while (cursor.moveToNext());
         }
-        Log.d("local", tracks.size() + "");
         return tracks;
     }
 
@@ -65,4 +64,4 @@ public class FetchTracksFromDevice {
         track.setArtworkUrl(new File(track.getUri()).getAbsolutePath());
         return track;
     }
-}
+}l

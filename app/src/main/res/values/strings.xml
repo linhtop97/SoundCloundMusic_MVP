@@ -22,7 +22,6 @@
     <string name="txt_number_1">1</string>
     <string name="sample">04:52 | Linh</string>
     <string name="msg_permission_denied">permission denied</string>
-
     <string-array name="music_genres">
         <item>Pop</item>
         <item>All music</item>
