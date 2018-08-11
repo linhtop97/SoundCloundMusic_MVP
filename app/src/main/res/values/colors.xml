@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="transparent">#00000000</color>
+
+    <color name="sc.theme.colorPrimary">#FFFFFF</color>
+    <color name="sc.theme.colorPrimaryDark">#00796b</color>
+    <color name="sc.theme.colorAccent">#00796b</color>
+    <color name="sc.theme.colorBackGroundRV">#3364ccc0</color>
+
+    <color name="sc.theme.background_list">#3364ccc0</color>
+
+    <color name="selector_list_title_text">#CD64ccc0</color>
+    <color name="selector_list_hint_text">#8064ccc0</color>
+    <color name="sc.theme.textColorPrimary">#223331</color>
+    <color name="sc.theme.textColorHint">#8064ccc0</color>
+    <color name="sc.theme.textColorSecondary">#223331</color>
+    <color name="sc.theme.colorControlActivated">#7AFFFFFF</color>
+    <color name="sc.theme.colorControlHighlight">#7AFFFFFF</color>
+
+    <color name="sc.theme.colorTabIconUnselected">#223331</color>
+    <color name="sc.theme.colorTabIconselected">#FF5722</color>
+    <color name="sc.theme.colortabIndicator">#FF5722</color>
+</resources>
