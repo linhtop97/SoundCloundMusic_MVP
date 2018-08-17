@@ -8,8 +8,8 @@ import linhnb.com.soundcloundmusic_mvp.data.source.local.PlayListLocalDataSource
 
 public class PlayListsRepository implements PlayListDataSource {
 
-    private static PlayListLocalDataSource mPlayListLocalDataSource;
     private static PlayListsRepository sInstance;
+    private PlayListLocalDataSource mPlayListLocalDataSource;
 
     private PlayListsRepository(PlayListLocalDataSource playListLocalDataSource) {
         mPlayListLocalDataSource = playListLocalDataSource;
@@ -28,7 +28,7 @@ public class PlayListsRepository implements PlayListDataSource {
 
     @Override
     public List<PlayList> getAllPlayList() {
-        return null;
+        return mPlayListLocalDataSource.getAllPlayList();
     }
 
     @Override

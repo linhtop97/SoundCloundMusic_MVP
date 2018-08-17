@@ -21,4 +21,7 @@
     <color name="sc.theme.colorTabIconUnselected">#223331</color>
     <color name="sc.theme.colorTabIconselected">#FF5722</color>
     <color name="sc.theme.colortabIndicator">#FF5722</color>
+
+    <color name="sc.theme.colorBackgroundNamePlayList">#effbfd</color>
+    <color name="sc.theme.colorNamePlayList">#DDF9FF</color>
 </resources>
