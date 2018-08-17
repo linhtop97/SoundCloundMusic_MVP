@@ -1,6 +1,6 @@
 package linhnb.com.soundcloundmusic_mvp.ui.local;
 
-import linhnb.com.soundcloundmusic_mvp.source.TracksRepository;
+import linhnb.com.soundcloundmusic_mvp.data.source.TracksRepository;
 
 public class LocalMusicPresenter implements LocalMusicContract.Presenter {
     private LocalMusicContract.View mView;

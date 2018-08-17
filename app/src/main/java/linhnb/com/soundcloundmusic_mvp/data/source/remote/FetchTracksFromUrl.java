@@ -1,4 +1,4 @@
-package linhnb.com.soundcloundmusic_mvp.source.remote;
+package linhnb.com.soundcloundmusic_mvp.data.source.remote;
 
 import android.os.AsyncTask;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
-import linhnb.com.soundcloundmusic_mvp.source.TracksDataSource;
+import linhnb.com.soundcloundmusic_mvp.data.source.TracksDataSource;
 import linhnb.com.soundcloundmusic_mvp.utils.Constant;
 import linhnb.com.soundcloundmusic_mvp.utils.StringUtil;
 

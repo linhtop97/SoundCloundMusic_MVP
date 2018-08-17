@@ -15,7 +15,7 @@ import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.R;
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
-import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
+import linhnb.com.soundcloundmusic_mvp.data.source.local.PreferenceManager;
 import linhnb.com.soundcloundmusic_mvp.ui.home.HomeFragment;
 import linhnb.com.soundcloundmusic_mvp.ui.maincontent.MainFragment;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.PlayMusicFragment;

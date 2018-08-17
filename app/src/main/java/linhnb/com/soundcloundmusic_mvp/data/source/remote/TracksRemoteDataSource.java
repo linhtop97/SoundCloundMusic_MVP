@@ -1,8 +1,8 @@
-package linhnb.com.soundcloundmusic_mvp.source.remote;
+package linhnb.com.soundcloundmusic_mvp.data.source.remote;
 
 import android.support.annotation.NonNull;
 
-import linhnb.com.soundcloundmusic_mvp.source.TracksDataSource;
+import linhnb.com.soundcloundmusic_mvp.data.source.TracksDataSource;
 import linhnb.com.soundcloundmusic_mvp.utils.StringUtil;
 
 public class TracksRemoteDataSource implements TracksDataSource.RemoteDataSource {

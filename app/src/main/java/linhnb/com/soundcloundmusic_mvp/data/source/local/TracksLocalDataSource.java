@@ -1,11 +1,11 @@
-package linhnb.com.soundcloundmusic_mvp.source.local;
+package linhnb.com.soundcloundmusic_mvp.data.source.local;
 
 import android.support.annotation.NonNull;
 
 import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
-import linhnb.com.soundcloundmusic_mvp.source.TracksDataSource;
+import linhnb.com.soundcloundmusic_mvp.data.source.TracksDataSource;
 
 public class TracksLocalDataSource implements TracksDataSource.LocalDataSource {
     private static TracksLocalDataSource sInstance;

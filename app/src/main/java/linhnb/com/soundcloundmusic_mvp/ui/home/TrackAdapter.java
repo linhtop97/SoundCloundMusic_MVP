@@ -20,8 +20,8 @@ import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.R;
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
-import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
-import linhnb.com.soundcloundmusic_mvp.source.remote.TrackDownloadManager;
+import linhnb.com.soundcloundmusic_mvp.data.source.local.PreferenceManager;
+import linhnb.com.soundcloundmusic_mvp.data.source.remote.TrackDownloadManager;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.IAdapterView;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.ListAdapter;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.OnLoadMoreListener;

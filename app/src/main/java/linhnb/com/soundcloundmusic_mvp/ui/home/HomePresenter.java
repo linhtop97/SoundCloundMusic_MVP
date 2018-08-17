@@ -3,8 +3,8 @@ package linhnb.com.soundcloundmusic_mvp.ui.home;
 import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
-import linhnb.com.soundcloundmusic_mvp.source.TracksDataSource;
-import linhnb.com.soundcloundmusic_mvp.source.TracksRepository;
+import linhnb.com.soundcloundmusic_mvp.data.source.TracksDataSource;
+import linhnb.com.soundcloundmusic_mvp.data.source.TracksRepository;
 
 public class HomePresenter implements HomeContract.Presenter,
         TracksDataSource.LoadTracksCallback {
