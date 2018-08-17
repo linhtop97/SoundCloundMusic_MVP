@@ -1,4 +1,4 @@
-package linhnb.com.soundcloundmusic_mvp.source;
+package linhnb.com.soundcloundmusic_mvp.data.source;
 
 
 import android.support.annotation.NonNull;
@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
-import linhnb.com.soundcloundmusic_mvp.source.local.TracksLocalDataSource;
-import linhnb.com.soundcloundmusic_mvp.source.remote.TracksRemoteDataSource;
+import linhnb.com.soundcloundmusic_mvp.data.source.local.TracksLocalDataSource;
+import linhnb.com.soundcloundmusic_mvp.data.source.remote.TracksRemoteDataSource;
 
 public class TracksRepository implements TracksDataSource.RemoteDataSource, TracksDataSource.LocalDataSource {
 

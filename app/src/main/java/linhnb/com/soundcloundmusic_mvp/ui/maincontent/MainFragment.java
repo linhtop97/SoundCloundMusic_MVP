@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import linhnb.com.soundcloundmusic_mvp.R;
-import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
+import linhnb.com.soundcloundmusic_mvp.data.source.local.PreferenceManager;
 import linhnb.com.soundcloundmusic_mvp.ui.main.MainActivity;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.PlayMusicFragment;
 import linhnb.com.soundcloundmusic_mvp.utils.Constant;

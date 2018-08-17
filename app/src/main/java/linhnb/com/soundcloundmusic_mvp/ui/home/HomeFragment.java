@@ -21,9 +21,9 @@ import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.R;
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
-import linhnb.com.soundcloundmusic_mvp.source.TracksRepository;
-import linhnb.com.soundcloundmusic_mvp.source.local.TracksLocalDataSource;
-import linhnb.com.soundcloundmusic_mvp.source.remote.TracksRemoteDataSource;
+import linhnb.com.soundcloundmusic_mvp.data.source.TracksRepository;
+import linhnb.com.soundcloundmusic_mvp.data.source.local.TracksLocalDataSource;
+import linhnb.com.soundcloundmusic_mvp.data.source.remote.TracksRemoteDataSource;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.OnItemClickListener;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.OnLoadMoreListener;
 import linhnb.com.soundcloundmusic_mvp.utils.ArrayListUtil;

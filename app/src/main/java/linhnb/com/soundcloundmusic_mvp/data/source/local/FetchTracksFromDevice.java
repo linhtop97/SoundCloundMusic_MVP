@@ -1,4 +1,4 @@
-package linhnb.com.soundcloundmusic_mvp.source.local;
+package linhnb.com.soundcloundmusic_mvp.data.source.local;
 
 import android.content.ContentResolver;
 import android.database.Cursor;

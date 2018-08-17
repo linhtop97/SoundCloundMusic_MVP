@@ -15,7 +15,7 @@ import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.R;
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
-import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
+import linhnb.com.soundcloundmusic_mvp.data.source.local.PreferenceManager;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.ListAdapter;
 import linhnb.com.soundcloundmusic_mvp.ui.maincontent.TabType;
 import linhnb.com.soundcloundmusic_mvp.utils.StringUtil;

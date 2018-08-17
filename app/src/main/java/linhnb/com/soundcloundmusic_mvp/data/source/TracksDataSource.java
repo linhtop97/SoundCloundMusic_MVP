@@ -1,4 +1,4 @@
-package linhnb.com.soundcloundmusic_mvp.source;
+package linhnb.com.soundcloundmusic_mvp.data.source;
 
 import android.support.annotation.NonNull;
 

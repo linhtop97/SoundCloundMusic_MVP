@@ -5,13 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.os.Parcelable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
-import linhnb.com.soundcloundmusic_mvp.source.local.PreferenceManager;
+import linhnb.com.soundcloundmusic_mvp.data.source.local.PreferenceManager;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.IPlay;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.MusicService;
 import linhnb.com.soundcloundmusic_mvp.ui.playmusic.service.PlayMode;

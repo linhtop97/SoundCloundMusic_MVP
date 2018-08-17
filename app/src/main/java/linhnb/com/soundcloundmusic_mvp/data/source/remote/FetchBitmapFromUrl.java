@@ -1,4 +1,4 @@
-package linhnb.com.soundcloundmusic_mvp.source.remote;
+package linhnb.com.soundcloundmusic_mvp.data.source.remote;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
