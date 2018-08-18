@@ -36,7 +36,9 @@ public class PlayListPresenter implements PlayListContract.Presenter {
 
     @Override
     public void addPlayList(PlayList playList) {
-        mRepository.addPlayList(playList);
+        if (mRepository.addPlayList(playList)) {
+            mView.onPlayListAdded(playList);
+        }
     }
 
     @Override

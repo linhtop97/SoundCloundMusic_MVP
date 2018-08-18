@@ -9,6 +9,12 @@ import linhnb.com.soundcloundmusic_mvp.ui.base.BaseView;
 public interface PlayListContract {
     interface View extends BaseView<Presenter> {
 
+        void showLoading();
+
+        void hideLoading();
+
+        void handleError(Throwable error);
+
         void onPlayListsLoaded(List<PlayList> playLists);
 
         void onPlayListAdded(PlayList playList);

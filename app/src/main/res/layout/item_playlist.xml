@@ -24,6 +24,7 @@
             android:visibility="gone" />
 
         <TextView
+            android:background="@color/sc.theme.colorBackgroundNamePlayList"
             android:id="@+id/image_view_name"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"

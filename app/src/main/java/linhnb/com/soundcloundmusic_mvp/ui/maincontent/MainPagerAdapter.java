@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import linhnb.com.soundcloundmusic_mvp.ui.home.HomeFragment;
 import linhnb.com.soundcloundmusic_mvp.ui.local.LocalMusicFragment;
-import linhnb.com.soundcloundmusic_mvp.ui.playlist.PlaylistFragment;
+import linhnb.com.soundcloundmusic_mvp.ui.playlist.PlayListFragment;
 
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
@@ -25,7 +25,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case TabType.LOCAL_MUSIC:
                 return LocalMusicFragment.newInstance();
             case TabType.PLAYLIST:
-                return PlaylistFragment.newInstance();
+                return PlayListFragment.newInstance();
         }
         return null;
     }

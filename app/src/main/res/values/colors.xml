@@ -15,13 +15,13 @@
     <color name="sc.theme.textColorPrimary">#223331</color>
     <color name="sc.theme.textColorHint">#8064ccc0</color>
     <color name="sc.theme.textColorSecondary">#223331</color>
-    <color name="sc.theme.colorControlActivated">#7AFFFFFF</color>
+    <color name="sc.theme.colorControlActivated">#00796b</color>
     <color name="sc.theme.colorControlHighlight">#7AFFFFFF</color>
 
     <color name="sc.theme.colorTabIconUnselected">#223331</color>
     <color name="sc.theme.colorTabIconselected">#FF5722</color>
     <color name="sc.theme.colortabIndicator">#FF5722</color>
 
-    <color name="sc.theme.colorBackgroundNamePlayList">#effbfd</color>
+    <color name="sc.theme.colorBackgroundNamePlayList">#8064ccc0</color>
     <color name="sc.theme.colorNamePlayList">#DDF9FF</color>
 </resources>

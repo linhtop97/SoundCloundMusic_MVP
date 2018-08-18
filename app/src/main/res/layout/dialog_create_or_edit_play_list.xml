@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingBottom="@dimen/dp_8"
     android:paddingLeft="@dimen/dp_24"
+    android:background="@android:color/white"
     android:paddingRight="@dimen/dp_24"
     android:paddingTop="@dimen/dp_16">
 
@@ -16,7 +17,7 @@
         android:inputType="textCapWords"
         android:maxLength="@integer/limits_play_list_name"
         android:singleLine="true"
-        android:textColor="?attr/colorAccent"
-        android:textColorHint="@color/sc.theme.textColorHint" />
+        android:textColor="@color/sc.theme.colorAccent"
+        android:textColorHint="@color/sc.theme.colorAccent"/>
 
 </FrameLayout>

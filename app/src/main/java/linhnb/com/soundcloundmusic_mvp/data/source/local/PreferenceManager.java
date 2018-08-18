@@ -26,6 +26,7 @@ public class PreferenceManager {
     private static final String KEY_IMAGE_URL = "imageUrl";
     private static final String KEY_IS_PLAYING = "isPlaying";
     private static final String KEY_TAB = "tab";
+    private static final String KEY_PLAYLIST = "playlist";
 
     private static SharedPreferences preferences(Context context) {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -90,4 +91,11 @@ public class PreferenceManager {
         return preferences(context).getInt(KEY_TAB, TabType.HOME);
     }
 
+    public static String getPlayLists(Context context) {
+        return preferences(context).getString(KEY_PLAYLIST, null);
+    }
+
+    public static void setPlayLists(Context context, String playlist) {
+        edit(context).putString(KEY_PLAYLIST, playlist).commit();
+    }
 }
