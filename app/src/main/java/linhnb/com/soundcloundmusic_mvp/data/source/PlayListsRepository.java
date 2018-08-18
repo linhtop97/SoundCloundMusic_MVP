@@ -33,7 +33,7 @@ public class PlayListsRepository implements PlayListDataSource {
 
     @Override
     public boolean addPlayList(PlayList playList) {
-        return false;
+        return mPlayListLocalDataSource.addPlayList(playList);
     }
 
     @Override

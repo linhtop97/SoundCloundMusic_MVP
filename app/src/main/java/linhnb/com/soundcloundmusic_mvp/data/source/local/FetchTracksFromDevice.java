@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,22 +46,25 @@ public class FetchTracksFromDevice {
                 tracks.add(track);
             } while (cursor.moveToNext());
         }
-        Log.d("local", tracks.size() + "");
         return tracks;
     }
 
     private Track cursorToMusic(Cursor cursor) {
-        Track track = new Track();
-        track.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)));
+        Track track = null;
         String displayName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME));
         if (displayName.endsWith(".mp3")) {
             displayName = displayName.substring(0, displayName.length() - 4);
+        } else {
+            displayName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
         }
-        track.setTitle(displayName);
-        track.setUserName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
-        track.setUri(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
-        track.setDuration(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
-        track.setArtworkUrl(new File(track.getUri()).getAbsolutePath());
+
+        String uri = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
+
+        track = new Track.Builder().setTitle(displayName)
+                .setUserName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)))
+                .setUri(uri)
+                .setDuration(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)))
+                .setArtworkUrl(new File(uri).getAbsolutePath()).build();
         return track;
     }
 }

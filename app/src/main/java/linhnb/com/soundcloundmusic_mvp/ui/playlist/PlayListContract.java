@@ -11,7 +11,7 @@ public interface PlayListContract {
 
         void onPlayListsLoaded(List<PlayList> playLists);
 
-        void onPlayListCreated(PlayList playList);
+        void onPlayListAdded(PlayList playList);
 
         void onPlayListEdited(PlayList playList);
 
@@ -22,7 +22,7 @@ public interface PlayListContract {
 
         void loadPlayLists();
 
-        void createPlayList(PlayList playList);
+        void addPlayList(PlayList playList);
 
         void editPlayList(PlayList playList);
 
