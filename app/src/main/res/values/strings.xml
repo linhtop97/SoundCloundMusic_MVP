@@ -28,6 +28,11 @@
     <string name="play_now">Play now</string>
     <string name="rename">Rename</string>
     <string name="delete">Delete</string>
+    <string name="play_list_dialog_hint">Play list name</string>
+    <string name="msg_cancel">Cancel</string>
+    <string name="msg_Confirm">Confirm</string>
+    <string name="play_list.create">Create play list</string>
+    <string name="play_list.edit">Edit play list</string>
 
     <string-array name="music_genres">
         <item>Pop</item>

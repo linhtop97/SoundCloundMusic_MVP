@@ -108,19 +108,19 @@ public class FetchTracksFromUrl extends AsyncTask<String, Void, List<Track>> {
     }
 
     private Track parseJsonObjectToTrackObject(JSONObject jsonTrack) {
-        Track track = new Track();
+        Track track = null;
         try {
             JSONObject jsonUser = jsonTrack.getJSONObject(Track.TrackEntity.USER);
-            track.setArtworkUrl(parseArtworkUrlToBetter(jsonTrack.optString(Track.TrackEntity.ARTWORK_URL)));
-            track.setDownloadable(jsonTrack.optBoolean(Track.TrackEntity.DOWNLOADABLE));
-            track.setDownloadUrl(jsonTrack.optString(Track.TrackEntity.DOWNLOAD_URL));
-            track.setDuration(jsonTrack.optInt(Track.TrackEntity.DURATION));
-            track.setId(jsonTrack.optInt(Track.TrackEntity.ID));
-            track.setPlaybackCount(jsonTrack.optInt(Track.TrackEntity.PLAYBACK_COUNT));
-            track.setTitle(jsonTrack.optString(Track.TrackEntity.TITLE));
-            track.setUri(StringUtil.getUrlStreamTrack(jsonTrack.optString(Track.TrackEntity.URI)));
-            track.setLikesCount(jsonTrack.optInt(Track.TrackEntity.LIKES_COUNT));
-            track.setUserName(jsonUser.optString(Track.TrackEntity.USERNAME));
+            track = new Track.Builder().setArtworkUrl(parseArtworkUrlToBetter(jsonTrack.optString(Track.TrackEntity.ARTWORK_URL)))
+                    .setDownloadable(jsonTrack.optBoolean(Track.TrackEntity.DOWNLOADABLE))
+                    .setDownloadUrl(jsonTrack.optString(Track.TrackEntity.DOWNLOAD_URL))
+                    .setDuration(jsonTrack.optInt(Track.TrackEntity.DURATION))
+                    .setId(jsonTrack.optInt(Track.TrackEntity.ID))
+                    .setPlaybackCount(jsonTrack.optInt(Track.TrackEntity.PLAYBACK_COUNT))
+                    .setTitle(jsonTrack.optString(Track.TrackEntity.TITLE))
+                    .setUri(StringUtil.getUrlStreamTrack(jsonTrack.optString(Track.TrackEntity.URI)))
+                    .setLikesCount(jsonTrack.optInt(Track.TrackEntity.LIKES_COUNT))
+                    .setUserName(jsonUser.optString(Track.TrackEntity.USERNAME)).build();
 
         } catch (JSONException e) {
             return null;

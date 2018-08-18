@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/dp_8"
+    android:paddingLeft="@dimen/dp_24"
+    android:paddingRight="@dimen/dp_24"
+    android:paddingTop="@dimen/dp_16">
+
+    <EditText
+        android:id="@+id/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/play_list_dialog_hint"
+        android:imeOptions="actionDone"
+        android:inputType="textCapWords"
+        android:maxLength="@integer/limits_play_list_name"
+        android:singleLine="true"
+        android:textColor="?attr/colorAccent"
+        android:textColorHint="@color/sc.theme.textColorHint" />
+
+</FrameLayout>

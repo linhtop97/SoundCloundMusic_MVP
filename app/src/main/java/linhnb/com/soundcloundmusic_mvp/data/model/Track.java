@@ -50,17 +50,17 @@ public class Track implements Parcelable {
     @Expose
     private int mPlaybackCount;
 
-    public Track() {
-        mArtworkUrl = "";
-        mDownloadable = false;
-        mDownloadUrl = "";
-        mDuration = 0;
-        mId = 0;
-        mLikesCount = 0;
-        mTitle = "";
-        mUri = "";
-        mUserName = "";
-        mPlaybackCount = 0;
+    public Track(Builder builder) {
+        this.mArtworkUrl = builder.mArtworkUrl;
+        this.mDownloadable = builder.mDownloadable;
+        this.mDuration = builder.mDuration;
+        this.mId = builder.mId;
+        this.mLikesCount = builder.mLikesCount;
+        this.mTitle = builder.mTitle;
+        this.mUri = builder.mUri;
+        this.mUserName = builder.mUserName;
+        this.mPlaybackCount = builder.mPlaybackCount;
+        this.mDownloadUrl = builder.mDownloadUrl;
     }
 
     protected Track(Parcel in) {
@@ -175,7 +175,6 @@ public class Track implements Parcelable {
         parcel.writeInt(mPlaybackCount);
     }
 
-
     public static class TrackEntity {
         public static final String COLLECTION = "collection";
         public static final String ARTWORK_URL = "artwork_url";
@@ -192,5 +191,72 @@ public class Track implements Parcelable {
         public static final String LIKES_COUNT = "likes_count";
         public static final String LARGE_IMAGE_SIZE = "large";
         public static final String BETTER_IMAGE_SIZE = "original";
+    }
+
+    public static class Builder {
+        private String mArtworkUrl;
+        private boolean mDownloadable;
+        private String mDownloadUrl;
+        private int mDuration;
+        private int mId;
+        private int mLikesCount;
+        private String mTitle;
+        private String mUri;
+        private String mUserName;
+        private int mPlaybackCount;
+
+        public Builder setArtworkUrl(String artworkUrl) {
+            mArtworkUrl = artworkUrl;
+            return this;
+        }
+
+        public Builder setDownloadable(boolean downloadable) {
+            mDownloadable = downloadable;
+            return this;
+        }
+
+        public Builder setDownloadUrl(String downloadUrl) {
+            mDownloadUrl = downloadUrl;
+            return this;
+        }
+
+        public Builder setDuration(int duration) {
+            mDuration = duration;
+            return this;
+        }
+
+        public Builder setId(int id) {
+            mId = id;
+            return this;
+        }
+
+        public Builder setLikesCount(int likesCount) {
+            mLikesCount = likesCount;
+            return this;
+        }
+
+        public Builder setTitle(String title) {
+            mTitle = title;
+            return this;
+        }
+
+        public Builder setUri(String uri) {
+            mUri = uri;
+            return this;
+        }
+
+        public Builder setUserName(String userName) {
+            mUserName = userName;
+            return this;
+        }
+
+        public Builder setPlaybackCount(int playbackCount) {
+            mPlaybackCount = playbackCount;
+            return this;
+        }
+
+        public Track build() {
+            return new Track(this);
+        }
     }
 }

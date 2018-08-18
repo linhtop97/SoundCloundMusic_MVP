@@ -1,5 +1,6 @@
 package linhnb.com.soundcloundmusic_mvp.data.model;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,7 +26,6 @@ public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayL
             "CREATE TABLE " + PLAYLIST_TBL_NAME + "("
                     + COLUMN_PLAYLIST_ID + " " + INTEGER_DATA_TYPE + " " + PRIMARY_KEY + " " + AUTOINCREMENT + ", "
                     + COLUMN_PLAYLIST_NAME + " " + TEXT_DATA_TYPE + " " + NOT_NULL + ", "
-                    + COLUMN_PLAYLIST_IMAGE + " " + TEXT_DATA_TYPE + ", "
                     + COLUMN_NUMBER_TRACKS + " " + INTEGER_DATA_TYPE + " " + DEFAULT + " 0"
                     + ")";
 
@@ -62,7 +62,6 @@ public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayL
         SQLiteDatabase database = getReadableDatabase();
         String[] columns = {
                 COLUMN_PLAYLIST_NAME,
-                COLUMN_PLAYLIST_IMAGE,
                 COLUMN_NUMBER_TRACKS
         };
         Cursor cursor = database.query(PLAYLIST_TBL_NAME, columns, null, null,
@@ -80,7 +79,6 @@ public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayL
     private PlayList cursorToPlayList(Cursor cursor) {
         PlayList playList = new PlayList();
         playList.setName(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYLIST_NAME)));
-        playList.setImage(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYLIST_IMAGE)));
         playList.setNumberTracks(Integer.parseInt(cursor.
                 getString(cursor.getColumnIndexOrThrow(COLUMN_NUMBER_TRACKS))));
         return playList;
@@ -88,7 +86,17 @@ public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayL
 
     @Override
     public boolean addPlayList(PlayList playList) {
-        return false;
+        if (playList == null) {
+            return false;
+        }
+        if (checkPlayListNameIsExists(playList.getName())) {
+            return false;
+        }
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_PLAYLIST_NAME, playList.getName());
+        long result = database.insert(PLAYLIST_TBL_NAME, null, contentValues);
+        return result != -1;
     }
 
     @Override
@@ -124,5 +132,16 @@ public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayL
     @Override
     public boolean checkTrackExistPlayList(String playListName, Track track) {
         return false;
+    }
+
+    public boolean checkPlayListNameIsExists(String playlistName) {
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.query(PLAYLIST_TBL_NAME,
+                new String[]{COLUMN_PLAYLIST_ID}, COLUMN_PLAYLIST_NAME + "=?",
+                new String[]{playlistName},
+                null, null, null, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count > 0;
     }
 }

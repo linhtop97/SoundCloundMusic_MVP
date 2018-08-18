@@ -1,5 +1,6 @@
 package linhnb.com.soundcloundmusic_mvp.ui.playlist;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import java.util.List;
 
@@ -76,7 +78,7 @@ public class PlaylistFragment extends Fragment implements PlayListContract.View,
     }
 
     @Override
-    public void onPlayListCreated(PlayList playList) {
+    public void onPlayListAdded(PlayList playList) {
 
     }
 
@@ -98,5 +100,14 @@ public class PlaylistFragment extends Fragment implements PlayListContract.View,
     @Override
     public void onItemClick(List list, int position) {
 
+    }
+
+    private void createAddPlayListDialog() {
+        Dialog dialog = new Dialog(mMainActivity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //dialog.setContentView(R.layout.dialogcustom);
+        dialog.setCanceledOnTouchOutside(false);
+        //ánh xạ
+        dialog.show();
     }
 }

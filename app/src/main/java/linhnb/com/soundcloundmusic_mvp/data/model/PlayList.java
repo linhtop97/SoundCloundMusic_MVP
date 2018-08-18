@@ -1,9 +1,31 @@
 package linhnb.com.soundcloundmusic_mvp.data.model;
 
-public class PlayList {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class PlayList implements Parcelable {
+    public static final Creator<PlayList> CREATOR = new Creator<PlayList>() {
+        @Override
+        public PlayList createFromParcel(Parcel in) {
+            return new PlayList(in);
+        }
+
+        @Override
+        public PlayList[] newArray(int size) {
+            return new PlayList[size];
+        }
+    };
     private String mName;
     private int mNumberTracks;
-    private String mImage;
+
+    public PlayList() {
+
+    }
+
+    protected PlayList(Parcel in) {
+        mName = in.readString();
+        mNumberTracks = in.readInt();
+    }
 
     public String getName() {
         return mName;
@@ -21,12 +43,14 @@ public class PlayList {
         mNumberTracks = numberTracks;
     }
 
-    public String getImage() {
-        return mImage;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setImage(String image) {
-        mImage = image;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mName);
+        dest.writeInt(mNumberTracks);
     }
-
 }

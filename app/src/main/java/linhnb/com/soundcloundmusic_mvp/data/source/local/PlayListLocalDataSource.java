@@ -36,7 +36,7 @@ public class PlayListLocalDataSource implements PlayListDataSource {
 
     @Override
     public boolean addPlayList(PlayList playList) {
-        return false;
+        return mPlayListDataBase.addPlayList(playList);
     }
 
     @Override
