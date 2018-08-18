@@ -28,8 +28,10 @@ public class PlayListPresenter implements PlayListContract.Presenter {
 
     @Override
     public void loadPlayLists() {
+        mView.showLoading();
         List<PlayList> playLists = mRepository.getAllPlayList();
         playLists.add(null);
+        mView.hideLoading();
         mView.onPlayListsLoaded(playLists);
 
     }
@@ -43,7 +45,9 @@ public class PlayListPresenter implements PlayListContract.Presenter {
 
     @Override
     public void editPlayList(PlayList playList) {
-
+        if (mRepository.updatePlayList(playList)) {
+            mView.onPlayListEdited(playList);
+        }
     }
 
     @Override

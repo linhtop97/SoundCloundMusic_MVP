@@ -43,7 +43,7 @@ public class PlayListsRepository implements PlayListDataSource {
 
     @Override
     public boolean updatePlayList(PlayList playList) {
-        return false;
+        return mPlayListLocalDataSource.updatePlayList(playList);
     }
 
     @Override

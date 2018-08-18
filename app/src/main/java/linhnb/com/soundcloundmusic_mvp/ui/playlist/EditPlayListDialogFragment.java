@@ -152,8 +152,9 @@ public class EditPlayListDialogFragment extends DialogFragment implements Dialog
             if (s.equals(playListName.toLowerCase())) {
                 if (!isEditMode()) {
                     Toast.makeText(mMainActivity, mMainActivity.getText(R.string.playlist_name_is_exists), Toast.LENGTH_SHORT).show();
+                    return false;
                 }
-                return false;
+                return true;
             }
         }
         if ((isEditMode())) {
