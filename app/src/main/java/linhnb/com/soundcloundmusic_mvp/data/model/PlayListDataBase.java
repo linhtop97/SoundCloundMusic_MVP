@@ -63,6 +63,7 @@ public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayL
         List<PlayList> playLists = new ArrayList<>();
         SQLiteDatabase database = getReadableDatabase();
         String[] columns = {
+                COLUMN_PLAYLIST_ID,
                 COLUMN_PLAYLIST_NAME,
                 COLUMN_NUMBER_TRACKS
         };
@@ -80,9 +81,9 @@ public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayL
 
     private PlayList cursorToPlayList(Cursor cursor) {
         PlayList playList = new PlayList();
+        playList.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PLAYLIST_ID)));
         playList.setName(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYLIST_NAME)));
-        playList.setNumberTracks(Integer.parseInt(cursor.
-                getString(cursor.getColumnIndexOrThrow(COLUMN_NUMBER_TRACKS))));
+        playList.setNumberTracks(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NUMBER_TRACKS)));
         return playList;
     }
 
@@ -105,7 +106,15 @@ public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayL
 
     @Override
     public boolean updatePlayList(PlayList playList) {
-        return false;
+        if (playList == null) {
+            return false;
+        }
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_PLAYLIST_NAME, playList.getName());
+        String where = COLUMN_PLAYLIST_ID + " = " + playList.getId();
+        long result = database.update(PLAYLIST_TBL_NAME, contentValues, where, null);
+        return result != -1;
     }
 
     @Override

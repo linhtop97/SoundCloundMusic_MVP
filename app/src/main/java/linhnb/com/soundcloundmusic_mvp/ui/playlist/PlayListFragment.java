@@ -38,6 +38,7 @@ public class PlayListFragment extends Fragment implements PlayListContract.View,
     private MainActivity mMainActivity;
     private ProgressDialog mDialog;
     private PlayListContract.Presenter mPresenter;
+    private int mEditIndex;
 
     public static PlayListFragment newInstance() {
         return new PlayListFragment();
@@ -115,7 +116,8 @@ public class PlayListFragment extends Fragment implements PlayListContract.View,
 
     @Override
     public void onPlayListEdited(PlayList playList) {
-
+        mPlayListAdapter.getData().set(mEditIndex, playList);
+        mPlayListAdapter.notifyItemChanged(mEditIndex);
     }
 
     @Override
@@ -134,7 +136,7 @@ public class PlayListFragment extends Fragment implements PlayListContract.View,
     }
 
     @Override
-    public void onAction(View actionView, int position) {
+    public void onAction(View actionView, final int position) {
         final PlayList playList = mPlayListAdapter.getItem(position);
         PopupMenu actionMenu = new PopupMenu(getActivity(), actionView, Gravity.END | Gravity.BOTTOM);
         actionMenu.inflate(R.menu.options_menu_item_playlist);
@@ -145,6 +147,15 @@ public class PlayListFragment extends Fragment implements PlayListContract.View,
         actionMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_play_now) {
+                } else if (item.getItemId() == R.id.action_rename) {
+                    mEditIndex = position;
+                    putPlayList();
+                    EditPlayListDialogFragment.editPlayList(playList)
+                            .setCallback(PlayListFragment.this)
+                            .show(getFragmentManager().beginTransaction(), "EditPlayList");
+                } else if (item.getItemId() == R.id.action_delete) {
+                }
                 return true;
             }
         });
@@ -168,6 +179,7 @@ public class PlayListFragment extends Fragment implements PlayListContract.View,
 
     @Override
     public void onEdited(PlayList playList) {
+        mPresenter.editPlayList(playList);
     }
 
     private void putPlayList() {
