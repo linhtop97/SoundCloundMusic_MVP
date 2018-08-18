@@ -1,20 +1,20 @@
 package linhnb.com.soundcloundmusic_mvp.ui.playlist;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.List;
 
 import linhnb.com.soundcloundmusic_mvp.R;
 import linhnb.com.soundcloundmusic_mvp.data.model.PlayList;
+import linhnb.com.soundcloundmusic_mvp.data.model.PlayListDataBase;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.IAdapterView;
 import linhnb.com.soundcloundmusic_mvp.ui.base.adapter.ListAdapter;
 
@@ -22,6 +22,7 @@ public class PlayListAdapter extends ListAdapter<PlayList> {
 
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_ADD = 1;
+    private AddPlayListCallback mAddPlayListCallback;
 
     public PlayListAdapter(Context context, List<PlayList> data) {
         super(context, data);
@@ -54,19 +55,41 @@ public class PlayListAdapter extends ListAdapter<PlayList> {
         }
     }
 
+    public void setAddPlayListCallback(AddPlayListCallback callback) {
+        mAddPlayListCallback = callback;
+    }
+
+    public interface AddPlayListCallback {
+
+        void onAction(View actionView, int position);
+
+        void onAddPlayList();
+    }
+
     private class AddViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mTextNumberPlayLists;
 
+        @SuppressLint("StringFormatInvalid")
         private AddViewHolder(View view) {
             super(view);
             mTextNumberPlayLists = view.findViewById(R.id.text_number_playlist);
-            mTextNumberPlayLists.setText(String.valueOf((mData.size() - 1)).concat(" ").concat(
-                    mContext.getResources().getString(R.string.msg_1_playlists_in_total)));
+            if (mTextNumberPlayLists == null) {
+                return;
+            }
+            int itemCount = getItemCount() - 1;
+            if (itemCount > 1) {
+                mTextNumberPlayLists.setVisibility(View.VISIBLE);
+                mTextNumberPlayLists.setText(mContext.getString(R.string.msg_1_playlists_in_total, itemCount));
+            } else {
+                mTextNumberPlayLists.setVisibility(View.GONE);
+            }
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //add play list at here
+                    if (mAddPlayListCallback != null) {
+                        mAddPlayListCallback.onAddPlayList();
+                    }
                 }
             });
         }
@@ -89,11 +112,13 @@ public class PlayListAdapter extends ListAdapter<PlayList> {
             mTextNumberTracks = itemView.findViewById(R.id.text_number_tracks);
             mImageFavorite = itemView.findViewById(R.id.image_view_favorite);
             mImageButtonOption = itemView.findViewById(R.id.img_button_options);
-            setupOptionsMenu();
-            itemView.setOnClickListener(new View.OnClickListener() {
+            mImageButtonOption.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mItemClickListener.onItemClick(mData, getAdapterPosition());
+                    int position = getAdapterPosition();
+                    if (mAddPlayListCallback != null) {
+                        mAddPlayListCallback.onAction(mImageButtonOption, position);
+                    }
                 }
             });
         }
@@ -107,42 +132,13 @@ public class PlayListAdapter extends ListAdapter<PlayList> {
             mTextPlayListName.setText(mPlaylistName);
             mTextNumberTracks.setText(String.valueOf(item.getNumberTracks()).concat(" ")
                     .concat(mContext.getResources().getString(R.string.number_tracks)));
-            if (mPlaylistName.equals("Favorite")) {
+            if (mPlaylistName.equals(PlayListDataBase.FAVORITE_PLAYLIST)) {
                 mImageFavorite.setVisibility(View.VISIBLE);
                 mTextPlayList.setVisibility(View.GONE);
             } else {
+                mTextPlayList.setVisibility(View.VISIBLE);
                 mTextPlayList.setText(String.valueOf(item.getName().toLowerCase().charAt(0)));
             }
-        }
-
-        private void setupOptionsMenu() {
-            mImageButtonOption.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final PopupMenu popupMenu = new PopupMenu(mContext, mImageButtonOption);
-                    popupMenu.inflate(R.menu.options_menu_item_playlist);
-                    if (mPlaylistName.equals("Favorite")) {
-                        popupMenu.getMenu().getItem(1).setVisible(false);
-                        popupMenu.getMenu().getItem(2).setVisible(false);
-                    }
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
-                                case R.id.action_play_now:
-                                    return true;
-                                case R.id.action_rename:
-                                    return true;
-                                case R.id.action_delete:
-                                    return true;
-                                default:
-                                    return false;
-                            }
-                        }
-                    });
-                    popupMenu.show();
-                }
-            });
         }
     }
 }

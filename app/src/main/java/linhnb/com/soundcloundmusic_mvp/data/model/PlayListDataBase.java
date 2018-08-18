@@ -13,6 +13,7 @@ import linhnb.com.soundcloundmusic_mvp.data.source.PlayListDataSource;
 
 public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayListDataSource {
 
+    public static final String FAVORITE_PLAYLIST = "Favorite";
     public static final String CREATE_TRACK_TABLE_SQL =
             "CREATE TABLE " + TRACK_TBL_NAME + "("
                     + COLUMN_TRACK_ID + " " + INTEGER_DATA_TYPE + " " + PRIMARY_KEY + " " + AUTOINCREMENT + ", "
@@ -37,7 +38,8 @@ public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayL
 
     public static final String INSERT_FAVORITE_LIST_TRACK_TO_PLAYLIST =
             "INSERT INTO " + PLAYLIST_TBL_NAME + "("
-                    + COLUMN_PLAYLIST_NAME + ")" + " VALUES " + "('Favorite')";
+                    + COLUMN_PLAYLIST_NAME + ")" + " VALUES "
+                    + "('" + FAVORITE_PLAYLIST + "')";
 
     public PlayListDataBase(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -89,9 +91,6 @@ public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayL
         if (playList == null) {
             return false;
         }
-        if (checkPlayListNameIsExists(playList.getName())) {
-            return false;
-        }
         SQLiteDatabase database = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_PLAYLIST_NAME, playList.getName());
@@ -132,16 +131,5 @@ public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayL
     @Override
     public boolean checkTrackExistPlayList(String playListName, Track track) {
         return false;
-    }
-
-    public boolean checkPlayListNameIsExists(String playlistName) {
-        SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query(PLAYLIST_TBL_NAME,
-                new String[]{COLUMN_PLAYLIST_ID}, COLUMN_PLAYLIST_NAME + "=?",
-                new String[]{playlistName},
-                null, null, null, null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count > 0;
     }
 }

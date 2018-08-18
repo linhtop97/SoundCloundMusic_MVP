@@ -58,4 +58,8 @@ public class StringUtil {
                 Constant.PARA_OFFSET, 100, Constant.CLIENT_ID,
                 BuildConfig.API_KEY);
     }
+
+    public static String[] getPlayLists(String playlists) {
+        return playlists.split(" ");
+    }
 }

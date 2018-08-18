@@ -22,7 +22,7 @@
     <string name="txt_number_1">1</string>
     <string name="sample">04:52 | Linh</string>
     <string name="msg_permission_denied">permission denied</string>
-    <string name="msg_1_playlists_in_total">play lists in total</string>
+    <string name="msg_1_playlists_in_total">%d play lists in total</string>
     <string name="msg_add_playlist">Add play list</string>
     <string name="number_tracks">tracks</string>
     <string name="play_now">Play now</string>
@@ -33,6 +33,9 @@
     <string name="msg_Confirm">Confirm</string>
     <string name="play_list.create">Create play list</string>
     <string name="play_list.edit">Edit play list</string>
+    <string name="favorite">Favorite</string>
+    <string name="playlist_name_cannot_empty">Play list name canot empty</string>
+    <string name="playlist_name_is_exists">Play list is exists</string>
 
     <string-array name="music_genres">
         <item>Pop</item>
