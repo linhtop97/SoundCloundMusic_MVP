@@ -46,6 +46,9 @@ public class FetchTracksFromDevice {
                 tracks.add(track);
             } while (cursor.moveToNext());
         }
+        if (cursor != null) {
+            cursor.close();
+        }
         return tracks;
     }
 

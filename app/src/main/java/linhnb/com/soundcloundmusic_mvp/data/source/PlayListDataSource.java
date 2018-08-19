@@ -17,7 +17,7 @@ public interface PlayListDataSource {
 
     PlayList getPlayListByName(String playListName);
 
-    boolean addTrack(String playListName, Track track);
+    int addTrack(String playListName, Track track);
 
     boolean removeTrack(String playListName, Track track);
 

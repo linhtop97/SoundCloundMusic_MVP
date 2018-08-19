@@ -10,7 +10,7 @@ public interface DBUtils {
     String COLUMN_TITLE = "tTitle";
     String COLUMN_ARTIST = "tArtist";
     String COLUMN_DURATION = "iDuration";
-    String COLUMN_TRACK_IMAGE = "tTrackImage";
+    String COLUMN_TRACK_URI = "tTrackUri";
 
     String PLAYLIST_TBL_NAME = "tblPlayList";
     String COLUMN_PLAYLIST_ID = "PK_iPlayListId";

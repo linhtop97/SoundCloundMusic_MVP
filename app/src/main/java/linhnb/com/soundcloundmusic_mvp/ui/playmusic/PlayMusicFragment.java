@@ -28,6 +28,8 @@ import java.util.List;
 import linhnb.com.soundcloundmusic_mvp.Injection;
 import linhnb.com.soundcloundmusic_mvp.R;
 import linhnb.com.soundcloundmusic_mvp.data.model.Track;
+import linhnb.com.soundcloundmusic_mvp.data.source.PlayListsRepository;
+import linhnb.com.soundcloundmusic_mvp.data.source.local.PlayListLocalDataSource;
 import linhnb.com.soundcloundmusic_mvp.data.source.local.PreferenceManager;
 import linhnb.com.soundcloundmusic_mvp.data.source.remote.TrackDownloadManager;
 import linhnb.com.soundcloundmusic_mvp.ui.main.MainActivity;
@@ -286,6 +288,10 @@ public class PlayMusicFragment extends Fragment implements ViewPager.OnPageChang
             case R.id.button_download:
                 new TrackDownloadManager(getActivity(), PlayMusicFragment.this)
                         .download(PreferenceManager.getListTrack(getActivity()).get(PreferenceManager.getLastPosition(getActivity())));
+                break;
+            case R.id.button_favorite:
+//                PlayListsRepository.getInstance(PlayListLocalDataSource.getInstance(mMainActivity))
+//                        .addTrack("Favorite", mPlayer.getCurrentTrack());
                 break;
             default:
                 break;
