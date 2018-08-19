@@ -101,7 +101,13 @@ public class PlayListDataBase extends SQLiteOpenHelper implements DBUtils, PlayL
 
     @Override
     public boolean deletePlayList(PlayList playList) {
-        return false;
+        if (playList == null) {
+            return false;
+        }
+        SQLiteDatabase database = this.getWritableDatabase();
+        int index = database.delete(PLAYLIST_TBL_NAME, COLUMN_PLAYLIST_ID + " = ?",
+                new String[]{String.valueOf(playList.getId())});
+        return index > 0;
     }
 
     @Override

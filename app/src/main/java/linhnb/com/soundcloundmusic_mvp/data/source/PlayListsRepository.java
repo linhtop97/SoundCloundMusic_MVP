@@ -38,7 +38,7 @@ public class PlayListsRepository implements PlayListDataSource {
 
     @Override
     public boolean deletePlayList(PlayList playList) {
-        return false;
+        return mPlayListLocalDataSource.deletePlayList(playList);
     }
 
     @Override

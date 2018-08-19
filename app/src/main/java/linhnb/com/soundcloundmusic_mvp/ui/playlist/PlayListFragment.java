@@ -1,8 +1,10 @@
 package linhnb.com.soundcloundmusic_mvp.ui.playlist;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,6 +41,7 @@ public class PlayListFragment extends Fragment implements PlayListContract.View,
     private ProgressDialog mDialog;
     private PlayListContract.Presenter mPresenter;
     private int mEditIndex;
+    private int mDeleteIndex;
 
     public static PlayListFragment newInstance() {
         return new PlayListFragment();
@@ -110,8 +113,10 @@ public class PlayListFragment extends Fragment implements PlayListContract.View,
         int lastIndex = mPlayListAdapter.getData().size() - 1;
         mPlayListAdapter.getData().remove(lastIndex);
         mPlayListAdapter.getData().add(playList);
-        mPlayListAdapter.getData().add(null);
         mPlayListAdapter.notifyItemInserted(lastIndex);
+        mPlayListAdapter.getData().add(null);
+        mPlayListAdapter.updateFooterView();
+
     }
 
     @Override
@@ -122,7 +127,9 @@ public class PlayListFragment extends Fragment implements PlayListContract.View,
 
     @Override
     public void onPlayListDeleted(PlayList playList) {
-
+        mPlayListAdapter.getData().remove(mDeleteIndex);
+        mPlayListAdapter.notifyItemRemoved(mDeleteIndex);
+        mPlayListAdapter.updateFooterView();
     }
 
     @Override
@@ -155,6 +162,8 @@ public class PlayListFragment extends Fragment implements PlayListContract.View,
                             .setCallback(PlayListFragment.this)
                             .show(getFragmentManager().beginTransaction(), "EditPlayList");
                 } else if (item.getItemId() == R.id.action_delete) {
+                    mDeleteIndex = position;
+                    showAlertDialog(playList);
                 }
                 return true;
             }
@@ -190,5 +199,26 @@ public class PlayListFragment extends Fragment implements PlayListContract.View,
             }
         }
         PreferenceManager.setPlayLists(mMainActivity, playListString.trim());
+    }
+
+    public void showAlertDialog(final PlayList playList) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mMainActivity);
+        builder.setMessage("Do you want delete?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mPresenter.deletePlayList(playList);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
     }
 }
