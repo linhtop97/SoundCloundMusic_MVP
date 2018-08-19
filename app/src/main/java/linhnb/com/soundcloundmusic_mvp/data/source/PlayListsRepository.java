@@ -52,8 +52,8 @@ public class PlayListsRepository implements PlayListDataSource {
     }
 
     @Override
-    public boolean addTrack(String playListName, Track track) {
-        return false;
+    public int addTrack(String playListName, Track track) {
+        return mPlayListLocalDataSource.addTrack(playListName, track);
     }
 
     @Override
