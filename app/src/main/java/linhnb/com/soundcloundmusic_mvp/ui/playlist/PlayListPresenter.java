@@ -52,6 +52,8 @@ public class PlayListPresenter implements PlayListContract.Presenter {
 
     @Override
     public void deletePlayList(PlayList playList) {
-
+        if (mRepository.deletePlayList(playList)) {
+            mView.onPlayListDeleted(playList);
+        }
     }
 }

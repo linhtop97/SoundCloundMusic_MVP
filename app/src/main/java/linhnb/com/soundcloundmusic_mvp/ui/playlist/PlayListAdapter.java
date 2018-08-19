@@ -22,6 +22,7 @@ public class PlayListAdapter extends ListAdapter<PlayList> {
 
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_ADD = 1;
+    private TextView mTextNumberPlayLists;
     private AddPlayListCallback mAddPlayListCallback;
 
     public PlayListAdapter(Context context, List<PlayList> data) {
@@ -68,22 +69,11 @@ public class PlayListAdapter extends ListAdapter<PlayList> {
 
     private class AddViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mTextNumberPlayLists;
-
         @SuppressLint("StringFormatInvalid")
         private AddViewHolder(View view) {
             super(view);
             mTextNumberPlayLists = view.findViewById(R.id.text_number_playlist);
-            if (mTextNumberPlayLists == null) {
-                return;
-            }
-            int itemCount = getItemCount() - 1;
-            if (itemCount > 1) {
-                mTextNumberPlayLists.setVisibility(View.VISIBLE);
-                mTextNumberPlayLists.setText(mContext.getString(R.string.msg_1_playlists_in_total, itemCount));
-            } else {
-                mTextNumberPlayLists.setVisibility(View.GONE);
-            }
+            updateFooterView();
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,6 +85,18 @@ public class PlayListAdapter extends ListAdapter<PlayList> {
         }
     }
 
+    public void updateFooterView() {
+        if (mTextNumberPlayLists == null) {
+            return;
+        }
+        int itemCount = getItemCount() - 1;
+        if (itemCount > 1) {
+            mTextNumberPlayLists.setVisibility(View.VISIBLE);
+            mTextNumberPlayLists.setText(mContext.getString(R.string.msg_1_playlists_in_total, itemCount));
+        } else {
+            mTextNumberPlayLists.setVisibility(View.GONE);
+        }
+    }
     // "Normal item" ViewHolder
     private class PlayListViewHolder extends RecyclerView.ViewHolder implements IAdapterView<PlayList> {
         private TextView mTextPlayListName;

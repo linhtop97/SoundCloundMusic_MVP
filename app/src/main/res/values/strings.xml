@@ -35,7 +35,8 @@
     <string name="play_list.edit">Edit play list</string>
     <string name="favorite">Favorite</string>
     <string name="playlist_name_cannot_empty">Play list name canot empty</string>
-    <string name="playlist_name_is_exists">Play list is exists</string>
+    <string name="playlist_is_exists">Play list is exists</string>
+    <string name="playlist_name_is_exists">Play list name is exists</string>
 
     <string-array name="music_genres">
         <item>Pop</item>
